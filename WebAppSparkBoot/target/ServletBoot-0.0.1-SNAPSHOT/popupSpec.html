@@ -1,0 +1,125 @@
+    <!doctype html>
+    <html>
+    <head>
+    <!--link rel="stylesheet" type="text/css" media="all" href="css/reset.css" /> <!-- reset css -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<link href="grid.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+	
+    <style>
+        window{width:300px; height:150px; }
+        body{ background-color: ivory;}
+        #canvas{border:1px solid red; margin:0 auto; }
+    </style>
+	<script src=Chart.bundle.js></script>
+    <script>
+	//beginning of jscript
+    $(function(){
+		
+		//OK ------
+	ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	/*lab = window.opener.lab;//['DMA','someother','thing'];
+	l= window.opener.l;//[12,-5,-3];
+	key_opt = window.opener.key_opt;
+	agg_opt = window.opener.agg_opt;
+	col_opt = window.opener.col_opt; */
+	l2 = window.localStorage.getItem("l2");
+	l = window.localStorage.getItem("l");
+	gini = window.localStorage.getItem("gini");
+	console.log(gini);
+	
+	l2 = JSON.parse(l2);
+	l = JSON.parse(l);
+	//l2 = l2.split(/\s*,\s*/);
+	//l = l.split(/\s*,\s*/);
+	console.log(l2);
+	console.log(l);
+	
+	
+	myChart = new Chart(ctx, {
+	    type: 'scatter',
+	    data: {
+	        
+	        datasets: [{
+	            label: 'consumption inequity',
+	            data: l,
+				borderColor: "blue",
+	            borderWidth: 3,
+				showLine: true,
+				fill:false
+	        },{
+	            label: 'ideal',
+	            data: l2,
+				borderColor: "#3cba9f",
+	            borderWidth: 3,
+				showLine: true,
+				fill:false
+	        }]
+	    },
+	    options: {
+			title : {
+				display: true,
+				text: 'Lorenz Curve'
+			},
+			scales: {
+			yAxes: [{
+				scaleLabel: {
+	                	display:true,
+	                	labelString: "cumulative consumption percentile"
+	            }
+			}],
+			
+            xAxes: [{
+				scaleLabel: {
+						display:true,
+						labelString: "cumulative population percentile"
+				},
+                type: 'linear',
+                position: 'bottom'
+            }]
+			},
+			responsive: true
+	        
+	    }
+		
+	});
+		
+		var div = document.getElementById('ixMsg');
+		
+		div.innerHTML += '<strong>Gini Index : </strong>'+gini;
+
+    }); 
+	
+	
+	
+	// end $(function(){});
+    </script>
+	
+    </head>
+    <body>
+		<div class="container">
+	    <div class="container graphcanvas">
+        <div class="row">
+          <div class="col-md-12">
+			<canvas id="myChart"></canvas>
+			</div>
+		</div>
+		</div>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-12 text-center">
+          <div class="alert alert-success" id="ixMsg">
+              
+          </div>             
+          </div>
+        </div>
+
+      </div>		
+		
+		
+		
+	  </div>
+    </body>
+    </html>

@@ -1,0 +1,45 @@
+h4 {
+  margin-top: 25px;
+}
+.row {
+  margin-bottom: 20px;
+}
+.row .row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  background-color: rgba(86, 61, 124, .15);
+  border: 1px hidden #ddd;
+  border: 1px hidden rgba(86, 61, 124, .2);
+}
+
+.div_table [class*="col-"]{
+  
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86, 61, 124, .2);
+
+}
+
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+
+.table-hover>tbody>tr>td:hover, .table-hover>tbody>tr>td:hover{
+        background-color: #9A9999;
+}
+
+
+.table-striped tr td.highlight {
+    background-color: #3AE575;
+}
+
+.active {
+  background-color: #F00;
+}

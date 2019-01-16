@@ -1,0 +1,97 @@
+html,
+body {
+  height: 100%;
+  background-color: white;
+  
+
+}
+
+
+
+h4 {
+  margin-top: 25px;
+}
+.row {
+  margin-bottom: 20px;
+}
+.row .row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  background-color: rgba(49, 184, 214, .8);
+  border: 1px hidden #ddd;
+  border: 1px hidden rgba(86, 61, 124, .1);
+}
+
+.div_table [class*="col-"]{
+  
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86, 61, 124, .2);
+
+}
+
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+
+.table-hover>tbody>tr>td:hover, .table-hover>tbody>tr>td:hover{
+        background-color: #9A9999;
+}
+
+
+.table-striped tr td.highlight {
+    background-color: #3AE575;
+}
+
+.active {
+  background-color: #F00;
+}
+
+/* from cover */
+
+.masthead-nav > li {
+  display: inline-block;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.masthead-nav > .active {
+  background-color: #cccccc;
+}
+
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #737373;/*#fff; /* IE8 proofing */
+  color: #737373;/*rgba(255, 255, 255, .75);*/
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #737373;/*#a9a9a9;*/
+  border-bottom-color: black;/*rgba(255, 255, 255, .25);*/
+  color: black;
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+  color: #737373; /*#fff */
+  border-bottom-color: #737373;
+  background-color: #cccccc;
+}
+
+#myChart {
+  background-color: rgba(220,220,220, .5)
+}
