@@ -102,7 +102,7 @@ function submitquery(){
 			//l = data;
 			l = [];
 			var i;
-			for (i=0; i<data.length-1; i++) {
+			for (i=0; i<data.length-2; i++) { //Gini and Theil index last two
 				l.push(data[i]);
 			}
 			//data[i] has the gini index now
@@ -123,8 +123,13 @@ function submitquery(){
 			
 			createChart();
 			var div = document.getElementById('ixMsg');
-			div.innerHTML = '<strong>Gini Index : </strong>'+data[i].y.toPrecision(3);
+			div.innerHTML = '<strong>Gini Index : </strong>'+data[i].y.toPrecision(3)+'<br><strong>Theil Index : </strong>'+data[i+1].y.toPrecision(3);
+			
+			//theil index 
+			console.log('Theil index display: ',data[i+1].y.toPrecision(3));
+			
 			window.localStorage.setItem("gini", data[i].y.toPrecision(3)  );
+			window.localStorage.setItem("theil", data[i+1].y.toPrecision(3)  );
 			window.location.hash = '#myChart';
 			removeHash();
 		}
@@ -179,7 +184,7 @@ function createChart(){
 	    options: {
 			title : {
 				display: true,
-				text: 'Lorenz Curve (net_inflow)'
+				text: 'Lorenz Curve (consumption)'
 			},
 	        scales: {
 				yAxes: [{

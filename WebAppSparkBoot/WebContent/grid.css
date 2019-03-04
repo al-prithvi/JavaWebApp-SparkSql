@@ -118,3 +118,20 @@ hr {
 #zoomop {
 	display:none;
 }
+
+#dwnStd {
+	display:none;
+}
+
+#violinBox{
+	display:none;
+}
+
+/*dropdown button css*/
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+.dropdown > button, #date_option > div {
+	display:none;
+}

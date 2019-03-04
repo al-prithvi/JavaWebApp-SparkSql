@@ -73,6 +73,11 @@ function submitquery(){
 		createChart();
 	}
 	
+	plotLine()
+			document.getElementById('graph').style.display = "block";
+			document.getElementById('dwn').style.display = "block";
+	/* for debug
+	
 	if (x_opt == '' || col_opt == '') {
 		$("#subQ").removeClass('btn-primary').addClass('btn-danger');
 		//$("#subQ").addClass('btn-danger');
@@ -102,7 +107,7 @@ function submitquery(){
 			//l = data;
 			l = [];
 			var i;
-			for (i=0; i<data.length-1; i++) {
+			for (i=0; i<data.length-2; i++) { //Gini and Theil index last two
 				l.push(data[i]);
 			}
 			//data[i] has the gini index now
@@ -113,6 +118,8 @@ function submitquery(){
 				l.push(data[i].count);
 				lab.push(data[i].dma_code);
 			}*/
+			
+			/* for debug
 			console.log(data);
 			console.log('again try');
 			console.log(l);
@@ -121,10 +128,16 @@ function submitquery(){
 			document.getElementById('graph').style.display = "block";
 			document.getElementById('dwn').style.display = "block";
 			
+			
 			createChart();
 			var div = document.getElementById('ixMsg');
-			div.innerHTML = '<strong>Gini Index : </strong>'+data[i].y.toPrecision(3);
+			div.innerHTML = '<strong>Gini Index : </strong>'+data[i].y.toPrecision(3)+'<br><strong>Theil Index : </strong>'+data[i+1].y.toPrecision(3);
+			
+			//theil index 
+			console.log('Theil index display: ',data[i+1].y.toPrecision(3));
+			
 			window.localStorage.setItem("gini", data[i].y.toPrecision(3)  );
+			window.localStorage.setItem("theil", data[i+1].y.toPrecision(3)  );
 			window.location.hash = '#myChart';
 			removeHash();
 		}
@@ -135,8 +148,12 @@ function submitquery(){
 		console.log(lab);
 
 
-	}
+	}//end of else block
+	*/
+	
 }
+
+
 
 
 var ctx;
@@ -179,7 +196,7 @@ function createChart(){
 	    options: {
 			title : {
 				display: true,
-				text: 'Lorenz Curve (net_inflow)'
+				text: 'Lorenz Curve (consumption)'
 			},
 	        scales: {
 				yAxes: [{
@@ -202,6 +219,98 @@ function createChart(){
 	});
 }
 
+//Debug: for plotting line 
+dataLine = [["2000-06-05",116],["2000-06-06",129],["2000-06-07",135],["2000-06-08",86],["2000-06-09",73],["2000-06-10",85],["2000-06-11",73],["2000-06-12",68],["2000-06-13",92],["2000-06-14",130],["2000-06-15",245],["2000-06-16",139],["2000-06-17",115],["2000-06-18",111],["2000-06-19",309],["2000-06-20",206],["2000-06-21",137],["2000-06-22",128],["2000-06-23",85],["2000-06-24",94],["2000-06-25",71],["2000-06-26",106],["2000-06-27",84],["2000-06-28",93],["2000-06-29",85],["2000-06-30",73],["2000-07-01",83],["2000-07-02",125],["2000-07-03",107],["2000-07-04",82],["2000-07-05",44],["2000-07-06",72],["2000-07-07",106],["2000-07-08",107],["2000-07-09",66],["2000-07-10",91],["2000-07-11",92],["2000-07-12",113],["2000-07-13",107],["2000-07-14",131],["2000-07-15",111],["2000-07-16",64],["2000-07-17",69],["2000-07-18",88],["2000-07-19",77],["2000-07-20",83],["2000-07-21",111],["2000-07-22",57],["2000-07-23",55],["2000-07-24",60]];
+
+var dateList = dataLine.map(function (item) {
+    return item[0];
+});
+var valueList = dataLine.map(function (item) {
+    return item[1];
+});
+
+
+function plotLine() {
+
+
+		function randomNumber(min, max) {
+			return Math.random() * (max - min) + min;
+		}
+
+		function randomBar(date, lastClose) {
+			var open = randomNumber(lastClose * 0.95, lastClose * 1.05);
+			var close = randomNumber(open * 0.95, open * 1.05);
+			console.log('value of ' + date.valueOf())
+			return {
+				t: date.valueOf(),
+				y: close
+			};
+		}
+
+		var dateFormat = 'HH mm';// 'MMMM DD YYYY HH mm'  April 01 2017 
+		var date = moment('00 15', dateFormat);
+		console.log(date)
+		var data = [randomBar(date, 7)];//30
+		console.log(data)
+		var labels = [date];
+		while (data.length < 6) { //60
+			date = date.clone().add(30, 'm'); // 1,'d'
+			if (date.isoWeekday() <= 5) {
+				data.push(randomBar(date, data[data.length - 1].y));
+				labels.push(date);
+				console.log('came here')
+			}
+		}
+		console.log(labels)
+		console.log(data)
+		
+
+	ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	
+	if(myChart){
+		myChart.destroy();
+	}
+
+		var cfg = {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: 'CHRT - Chart.js Corporation',
+					//backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+					//borderColor: window.chartColors.red,
+					data: data,
+					type: 'line',
+					pointRadius: 0,
+					fill: false,
+					lineTension: 0,
+					borderWidth: 2
+				}]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						type: 'time',
+						distribution: 'series',
+						ticks: {
+							source: 'labels'
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Closing price ($)'
+						}
+					}]
+				}
+			}
+		};	
+	
+	myChart = new Chart(ctx, cfg);
+	
+}
+
 
 
 
@@ -219,6 +328,15 @@ function track_click_element(clicked_id){
 		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
 	}
 	*/
+	
+	//change color of clicked button (table)
+	if (tab_opt == 'lorenz'){
+		$("#flow_pressure").removeClass('btn-primary').addClass('btn-success');	
+	}
+	else {
+		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
+	}	
+	
 	$("#"+tab_opt).removeClass('btn-success').addClass('btn-primary');
 
 	if(myChart){
@@ -231,6 +349,10 @@ function track_click_element(clicked_id){
 	y_opt = '';
 	//$("#"+tab_opt).removeClass('alert-danger').addClass('alert-success');
 
+	
+
+	
+	
 }
 
 
@@ -257,7 +379,16 @@ function plotLorenz(){
     //clear both data for next click
     employee_data = '';
    	
+	//add code to toggle b/w buttons
+	
+	
+	
 }
+
+
+
+
+
 
 //generate cells after table is clicked
 function generate_cells(objd){

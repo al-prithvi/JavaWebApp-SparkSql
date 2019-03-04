@@ -7,7 +7,18 @@ var col_opt = '';
 var agg_opt = '';
 var key_opt = '';
 
+var date_month_opt = '';
+var date_year_opt = '';
+var mon_year_opt = '';
 var myChart; // echart js canvas
+var std_dev;
+
+// according to date() in javascript: start with 0
+// same names as front end, can use this for generating code in html as well
+var month_map = {'Jan':0, 'Feb':1, 'Mar':2, 'Apr':3, 'May':4, 'Jun':5, 'Jul':6, 'Aug':7, 'Sep':8, 'Oct':9, 'Nov':10, 'Dec':11};
+//HARDCODED
+var dStart = new Date(2016,9,01);
+var dFinal = new Date(2018,02,31); // limit of the data pushed in oct16 to mar18
 
 // ***************** test objects for display checking
 //removed add later 
@@ -64,9 +75,14 @@ function track_click_element(clicked_id){
 	var agg_opt = '';
 	var key_opt = '';
 	
+	//refresh the date selection
+	date_month_opt = '';
+	date_year_opt = '';
+	
 	//change color of clicked button (table)
 	if (tab_opt == 'dma_monthly'){
 		$("#rr_billing").removeClass('btn-primary').addClass('btn-success');
+		
 	}
 	else {
 		$("#dma_monthly").removeClass('btn-primary').addClass('btn-success');
@@ -81,6 +97,11 @@ function track_click_element(clicked_id){
 	document.getElementById('graph').style.display = "none";
 	document.getElementById('dwn').style.display = "none";
 	document.getElementById('zoomop').style.display = "none";
+	document.getElementById('dwnStd').style.display = "none";
+	document.getElementById('violinBox').style.display = "none";
+	
+	document.getElementById('opt_mon_btn').style.display = "none";
+	document.getElementById('opt_year_btn').style.display = "none";		
 	//$("#"+tab_opt).removeClass('alert-danger').addClass('alert-success');
 
 }
@@ -131,7 +152,9 @@ function plotGraph(){
     agg_data = '';
     key_data = '';
 
-    //test_json();
+    //date_option buttons make visible 
+	document.getElementById('opt_mon_btn').style.display = "block";
+	document.getElementById('opt_year_btn').style.display = "block";	
 }
 
 function plotMonth(){
@@ -327,8 +350,21 @@ function submitquery(){
 		l = [];
 		createChart();
 	}
+	//for the case of date (added later to support rr_billing empty mon_year_opt for all other options, HARDCODED(can be added in other location
+	mon_year_opt = '';
 	
-	if (tab_opt == '' || col_opt == '' || agg_opt == '') {
+	//-------------case for box plot--------------
+	if (key_opt != '' && tab_opt!='' && col_opt !='' && agg_opt =='') {
+		$("#subQ").removeClass('btn-danger').addClass('btn-primary');
+		$("#subQmsg").removeClass('alert-danger').addClass('alert-success');
+		$("#subQmsg").html("<strong>Success</strong> : Query submitted")
+		console.log("box plot : "+tab_opt+" "+col_opt+" "+agg_opt+" "+key_opt);
+		vioBoxTog='violin';
+	}
+	
+	//----------gen case 
+	if (tab_opt == '' || col_opt == '' || (agg_opt == '' && key_opt == '') ) {
+		console.log('error case '+tab_opt+' '+col_opt+' '+key_opt);
 		$("#subQ").removeClass('btn-primary').addClass('btn-danger');
 		//$("#subQ").addClass('btn-danger');
 
@@ -336,10 +372,44 @@ function submitquery(){
 		$("#subQmsg").html("<strong>Error</strong> : Please make the required 3 selections")
 	}
 	else {
+		
+		// add extra case for RR_BILLING as it requires date as well
+		if (tab_opt == 'rr_billing' ) {
+			if (date_month_opt == '' || date_year_opt == '') {
+				console.log('error case date not selected '+date_month_opt+' '+date_year_opt);
+				$("#subQ").removeClass('btn-primary').addClass('btn-danger');
+				//$("#subQ").addClass('btn-danger');
+
+				$("#subQmsg").removeClass('alert-success').addClass('alert-danger');
+				$("#subQmsg").html("<strong>Error</strong> : Please pick the month / year")		
+				return;
+			} 
+			
+			//HARDCODED, can send query to check
+			dt_opt = new Date(date_year_opt, month_map[date_month_opt],01);
+			
+			if (dt_opt<dStart || dt_opt>dFinal) { 
+				console.log('error case no records for this '+date_month_opt+' '+date_year_opt);
+				$("#subQ").removeClass('btn-primary').addClass('btn-danger');
+				//$("#subQ").addClass('btn-danger');
+
+				$("#subQmsg").removeClass('alert-success').addClass('alert-danger');
+				$("#subQmsg").html("<strong>Error</strong> : Please pick another month/year")				
+				return;
+			}
+			
+			//if no issue, then fill the variable 
+			mon_year_opt = ((month_map[date_month_opt]+1)+date_year_opt.substring(2));
+		
+		}		
+		//make rr_billing date to send to servlet
+		
+		
+		
 		$("#subQ").removeClass('btn-danger').addClass('btn-primary');
 		$("#subQmsg").removeClass('alert-danger').addClass('alert-success');
 		$("#subQmsg").html("<strong>Success</strong> : Query submitted")
-		console.log("s: "+tab_opt+" "+col_opt+" "+agg_opt+" "+key_opt);
+		console.log("s: "+tab_opt+" "+col_opt+" "+agg_opt+" "+key_opt+" "+mon_year_opt);
 
 
 
@@ -354,7 +424,7 @@ function submitquery(){
 		//col_opt is from mapping dictionary and inner element from json object
 		//agg_opt is from array object
 		
-		var requestUrl = 'spark?table='+tab_opt+'&column='+col_opt+'&agg='+agg_opt+'&key='+key_opt;
+		var requestUrl = 'spark?table='+tab_opt+'&column='+col_opt+'&agg='+agg_opt+'&key='+key_opt+'&monYear='+mon_year_opt;
 		console.log(requestUrl);
 		request.open('GET', requestUrl, true);
 		console.log(request.responseText)
@@ -368,9 +438,11 @@ function submitquery(){
 			lab = [];
 			for (var i = 0; i < data.length; i++) {
 				console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+				//for only 1 bar
 				if (data[i].dma_code == "dma_code"){
 					lab.push("Table: "+tab_opt);
 				}
+				//multiple bars
 				else {
 					lab.push(data[i].dma_code);
 				}
@@ -386,7 +458,23 @@ function submitquery(){
 			document.getElementById('dwn').style.display = "block";
 			document.getElementById('zoomop').style.display = "block";
 			
-			createChart();
+			// check for whether violin/box or bar 
+			if (agg_opt == '') {
+				plotBox();
+				document.getElementById('violinBox').style.display = "block";
+			}
+			else {
+				createChart();
+				document.getElementById('violinBox').style.display = "none";
+				document.getElementById('dwnStd').style.display = "block";
+				var div = document.getElementById('stdMsg');
+				calcStandardDeviation();
+				
+				div.innerHTML = '<strong>Standard deviation : </strong>'+std_dev;
+			}
+			
+
+			
 			
 			window.location.hash = '#myChart';
 			removeHash();
@@ -400,6 +488,7 @@ function submitquery(){
 
 		//createChart();
 		//**************************************
+		//**************************************
 		
 	} //  end of else
 }
@@ -409,7 +498,7 @@ function submitquery(){
 //create chart
 
 function createChart(){
-	
+	vioBoxTog='';
 	//**** chart code
 	var ctx = document.getElementById("myChart");
 	ctx.style.backgroundColor = 'white';
@@ -479,12 +568,16 @@ function popUp(){
 	console.log(typeof key_opt);
 	console.log(agg_opt);
 	console.log(col_opt);
-	window.localStorage.setItem("lab",lab);
+	window.localStorage.setItem("lab",JSON.stringify(lab));
 	window.localStorage.setItem("key_opt",key_opt);
-	window.localStorage.setItem("l",l);
+	window.localStorage.setItem("l",JSON.stringify(l));
 	window.localStorage.setItem("agg_opt",agg_opt);
 	window.localStorage.setItem("clickedId",clickedId);
 	window.localStorage.setItem("data", JSON.stringify(data));
+	//this variable is used for checking in popUp page
+	console.log("before popUp "+vioBoxTog);
+	window.localStorage.setItem("vioBoxTog", vioBoxTog);
+	
 	var winName = 'myPopup'+(++popCounter);
 	
 	 window.open('popupTest.html', winName,'width=800,height=800,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,copyhistory=no,resizable=yes');
@@ -578,16 +671,47 @@ function srtDesc(a, b){
     return b.count - a.count;
 }
 
+//sort according to dma code (x axis)
+function srtXaxisAsc(a, b){
+    if (a.dma_code < b.dma_code)
+		return -1
+	else
+		return 1
+}
+
+//variable to keep track of toggle (binary)
+var toggleSort = 1;
+
 function sortFn(){
 	if (data[i].dma_code == "dma_code") {
 		console.log("can't sort 1 element");
 		return;
 	}
+	//not a box/violin plot
+	if (toggleSort == 1 && agg_opt != '') {
+		toggleSort = 0;
+		data.sort(srtAsc);
+	}
+	//violin and boxplot has only this sort
+	else {
+		toggleSort = 1;
+		data.sort(srtXaxisAsc);
+		
+	}
+	
 	console.log(data[1].dma_code + ' is a ' + data[1].count + '.');
-	data.sort(srtAsc);
+	//data.sort(srtAsc);
 	console.log(data[1].dma_code + ' is a ' + data[1].count + '.');
 	jsonToList(data);
-	createChart();
+	
+	
+	if (agg_opt == '') {
+		plotBox();
+	}
+	else {
+		createChart();
+	}
+	
 		//ctx.focus();
 		//$('.graphcanvas').focus()
 		//document.getElementById('myChart').focus({preventScroll:false});
@@ -607,3 +731,142 @@ function jsonToList(objj) {
 	}
 }
 
+// Box plot code
+
+
+
+function plotBox() {
+	
+	
+  document.getElementById('graph').style.display = "block";
+  var ctx = document.getElementById("myChart");
+  ctx.style.backgroundColor = 'white';
+	if(myChart){
+		myChart.destroy();
+	}  
+  
+boxplotData = {
+  // define label tree
+  labels: lab,
+  datasets: [{
+    label: '('+clickedId+')',
+    backgroundColor: 'rgba(255,0,0,0.5)',
+    borderColor: 'red',
+    borderWidth: 1,
+    outlierColor: '#999999',
+    padding: 10,
+    itemRadius: 0,
+    outlierColor: '#999999',
+    data: l
+  }]
+};
+  
+  
+  myChart = new Chart(ctx, {
+    type: vioBoxTog,
+    data: boxplotData,
+    options: {
+      responsive: true,
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: '('+clickedId+') for each '+key_opt
+      }
+    },
+	pan: {
+				enabled: true,
+				mode: 'xy',
+				speed: 2,
+				threshold: 2
+	},
+	zoom: {
+				enabled: true,
+				mode: 'y',
+				limits: {
+					max: 10,
+					min: 0.5
+				}
+	},
+	scales: {
+		yAxes: [{
+			ticks: {
+				beginAtZero:true
+			},
+			scaleLabel: {
+				display:true,
+				labelString: agg_opt+'('+clickedId+')'
+			}
+		}],
+		xAxes: [{
+			scaleLabel: {
+				display:true,
+				labelString: key_opt
+			}
+		}
+		]
+	}	
+	
+	
+  });	
+  //myChart.options.zoom.enabled = false;
+}
+
+
+
+function calcStandardDeviation(){
+	console.log("list is :"+l)
+
+	var sum = 0;
+	for (var i=0;i<l.length;i++){
+		sum += l[i]
+	}
+	mean = sum/l.length;
+	console.log("mean is "+mean)
+	sum = 0;
+	for (var i=0;i<l.length;i++){
+		sum += Math.pow((l[i]-mean),2)
+		
+	}
+	sum = sum/l.length;
+	std_dev = (Math.sqrt(sum)).toFixed(2);
+	console.log("median is "+std_dev);
+	
+}
+
+//function for toggle boxplot and violin plot
+var vioBoxTog='';
+function violinBoxToggle() {
+	if (vioBoxTog=='violin'){
+		vioBoxTog='boxplot'
+	}
+	else {
+		vioBoxTog='violin'
+	}
+	plotBox()
+} 
+
+//change dropdown button text and record the options clicked
+$(function(){
+  
+  $("#opt_month a").click(function(){
+    
+     $("#opt_mon_btn:first-child").text($(this).text());
+     $("#opt_mon_btn:first-child").val($(this).text());
+	 
+	 date_month_opt = ($(this).text());
+	 console.log('date month selected '+date_month_opt);
+	 
+  });
+
+  $("#opt_year a").click(function(){
+    
+     $("#opt_year_btn:first-child").text($(this).text());
+     $("#opt_year_btn:first-child").val($(this).text());
+	 
+	 date_year_opt = ($(this).text());
+	 console.log('date year selected'+date_year_opt);
+  });  
+  
+});

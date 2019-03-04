@@ -12,6 +12,10 @@
         #canvas{border:1px solid red; margin:0 auto; }
     </style>
 	<script src=Chart.bundle.js></script>
+	<script src=Chart.BoxPlot.js></script>
+	<script src="hammer.min.js"></script>
+	<script src="chartjs-plugin-zoom.js"></script>
+	
     <script>
 	//beginning of jscript
 	var data;
@@ -32,52 +36,168 @@
 	clickedId = window.localStorage.getItem("clickedId");
 	data = window.localStorage.getItem("data");
 	
-	console.log(lab);
+	vioBoxTog = window.localStorage.getItem("vioBoxTog");
+	console.log("violin option"+vioBoxTog);
+	console.log(typeof vioBoxTog);
+	
+	/*console.log(lab);
+	console.log(l);*/
+	console.log(typeof lab);
 	console.log(typeof l);
 	console.log(typeof key_opt);
 	console.log(agg_opt);
 	console.log(clickedId);
-	lab = lab.split(/\s*,\s*/);
-	l = l.split(/\s*,\s*/);
-
-	myChart = new Chart(ctx, {
-	    type: 'bar',
-	    data: {
-	        labels: lab,
-	        datasets: [{
-	            label: agg_opt+'('+clickedId+')',
-	            data: l,
-	            backgroundColor: "rgba(14,72,100,1)",
-				strokeColor: "brown",
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-			title : {
-				display: true,
-				text: agg_opt+'('+clickedId+') for each '+key_opt
-			},
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                },
-	                scaleLabel: {
-	                	display:true,
-	                	labelString: agg_opt+'('+clickedId+')'
-	                }
-	            }],
-				xAxes: [{
-					scaleLabel: {
-						display:true,
-						labelString: key_opt
-					}
-				}
-				]
-	        }
-	    }
-	});
+	console.log(lab)
+	console.log(l)
+	//lab = JSON.parse(lab);
+	//l = JSON.parse(l);
 		
+		//lab = lab.split(/\s*,\s*/);
+		//l = l.split(/\s*,\s*/);
+	
+	if (vioBoxTog == '') {
+		//lab = lab.split(/\s*,\s*/);
+		//l = l.split(/\s*,\s*/);
+		//l = JSON.parse(l);
+		//lab = JSON.parse(lab);
+		console.log("didn't this work")
+	}
+	console.log(lab);
+	console.log(l);
+	
+	
+			l=[];
+			lab = [];
+			data = JSON.parse(data);
+			for (var i = 0; i < data.length; i++) {
+				console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+				//for only 1 bar
+				if (data[i].dma_code == "dma_code"){
+					lab.push("Table: "+tab_opt);
+				}
+				//multiple bars
+				else {
+					lab.push(data[i].dma_code);
+				}
+				l.push(data[i].count);
+				
+			}	
+	
+	
+	//violin box plots 
+	if(vioBoxTog!=''){
+		console.log("it's a boxplot/violin");
+		boxplotData = {
+		  // define label tree
+		  labels: lab,
+		  datasets: [{
+			label: '('+clickedId+')',
+			backgroundColor: 'rgba(255,0,0,0.5)',
+			borderColor: 'red',
+			borderWidth: 1,
+			outlierColor: '#999999',
+			padding: 10,
+			itemRadius: 0,
+			outlierColor: '#999999',
+			data: l
+		  }]
+		};
+
+		console.log(boxplotData);
+		
+		  
+		  myChart = new Chart(ctx, {
+			type: vioBoxTog,
+			data: boxplotData,
+			options: {
+			  responsive: true,
+			  legend: {
+				position: 'top',
+			  },
+			  title: {
+				display: true,
+				text: '('+clickedId+') for each '+key_opt
+			  },
+					pan: {
+								enabled: true,
+								mode: 'xy',
+								speed: 2,
+								threshold: 2
+					},
+					zoom: {
+								enabled: true,
+								mode: 'y',
+								limits: {
+									max: 10,
+									min: 0.5
+								}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:true
+							},
+							scaleLabel: {
+								display:true,
+								labelString: agg_opt+'('+clickedId+')'
+							}
+						}],
+						xAxes: [{
+							scaleLabel: {
+								display:true,
+								labelString: key_opt
+							}
+						}
+						]
+					}			
+			}
+		  });
+		  //myChart.options.zoom.enabled = false;
+	
+	}	
+	
+	// bar chart 
+	else {
+		console.log("it's a bar chart")
+		myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: lab,
+				datasets: [{
+					label: agg_opt+'('+clickedId+')',
+					data: l,
+					backgroundColor: "rgba(14,72,100,1)",
+					strokeColor: "brown",
+					borderWidth: 1
+				}]
+			},
+			options: {
+				title : {
+					display: true,
+					text: agg_opt+'('+clickedId+') for each '+key_opt
+				},
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero:true
+						},
+						scaleLabel: {
+							display:true,
+							labelString: agg_opt+'('+clickedId+')'
+						}
+					}],
+					xAxes: [{
+						scaleLabel: {
+							display:true,
+							labelString: key_opt
+						}
+					}
+					]
+				}
+			}
+		});
+	
+	}//else block	
 
     }); 
 	

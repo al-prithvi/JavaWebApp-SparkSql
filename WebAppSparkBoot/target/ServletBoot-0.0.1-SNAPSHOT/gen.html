@@ -31,12 +31,21 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src=Chart.bundle.js></script>
+	<script src=Chart.BoxPlot.js></script>
 	<script src="hammer.min.js"></script>
 	<script src="chartjs-plugin-zoom.js"></script>
+	
+	<!-- Added following for dropdown button -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>	
+		
+	
   </head>
 
   <body>
-    <script src="main.js"></script>
+    <script src="main.js?1501"></script>
     <div class="container">
 
       <div class="page-header">
@@ -72,13 +81,13 @@
           <button class="btn" type="button">Flow & pressure data</button>
         </div>
         <div class="col-md-3 text-center">
-          <button id="dma_monthly" class="btn btn-success" type="button" onclick="plotMonth();track_click_element(this.id);">DMA monthly data</button>
+          <button id="dma_monthly" class="btn btn-success" type="button" onclick="track_click_element(this.id);plotMonth();">DMA monthly data</button>
         </div>
         <div class="col-md-3 text-center">
           <button class="btn" type="button">RR information</button>
         </div>
         <div class="col-md-3 text-center">
-          <button id = "rr_billing" class="btn btn-success" type="button" onclick="plotGraph();track_click_element(this.id);">RR Billing</button>
+          <button id = "rr_billing" class="btn btn-success" type="button" onclick="track_click_element(this.id);plotGraph();">RR Billing</button>
         </div>
       </div>
       
@@ -105,8 +114,10 @@
         </div>
 
         <div class="row">
-          <div class="col-md-4">
+          
+		  <div class="col-md-4">
           </div>
+		  
           <div class="col-md-4 text-center">
             <p>please select a key to group by</p>
             <h4>Attribute to group by</h4>
@@ -114,9 +125,35 @@
               <tr></tr>
             </table> 
           </div>
-          <div class="col-md-4">
-          </div>
+          <div class="col-md-2 text-center">
+			<div class="dropdown">
+			  <button class="btn btn-primary dropdown-toggle" type="button" id="opt_mon_btn" data-toggle="dropdown">month</button>
+			  <div class="dropdown-menu" id="opt_month">
+				<a class="dropdown-item">Jan</a>
+				<a class="dropdown-item">Feb</a>
+				<a class="dropdown-item">Mar</a>
+				<a class="dropdown-item">Apr</a>
+				<a class="dropdown-item">May</a>
+				<a class="dropdown-item">Jun</a>
+				<a class="dropdown-item">Jul</a>
+				<a class="dropdown-item">Aug</a>
+				<a class="dropdown-item">Sep</a>
+				<a class="dropdown-item">Oct</a>
+				<a class="dropdown-item">Nov</a>
+				<a class="dropdown-item">Dec</a>
+			  </div>
+			</div>  
+		  </div>			  
 
+			<div class="col-md-2 text-center dropdown">
+			  <button class="btn btn-primary dropdown-toggle" type="button" id="opt_year_btn" data-toggle="dropdown">year</button>
+			  <div class="dropdown-menu" id="opt_year">
+				<a class="dropdown-item">2016</a>
+				<a class="dropdown-item">2017</a>
+				<a class="dropdown-item">2018</a>
+			  </div>
+			</div>	
+		
         </div>
 
 
@@ -156,6 +193,29 @@
 
       </div>
 
+	  
+	  
+	  <div class="container" id="violinBox">
+	    <div class="row">
+		  <div class="col-md-12 text-center">          
+             <button class="btn btn-success" type="button" onclick="violinBoxToggle()" id="vioBox">Violin/BoxPlot</button>     
+          </div>
+		</div>
+	  </div>	  
+	  
+	  <!-- info displays and buttons -->
+      <div class="container" id="dwnStd">
+        <div class="row">
+
+          <div class="col-md-12 text-center">
+          <div class="alert alert-success" id="stdMsg">             
+          </div>             
+          </div>		  
+        </div>
+
+      </div>	  
+	    
+	  
 	  <div class="container zoom_opt" id="zoomop">
 	      <div class="row">
 

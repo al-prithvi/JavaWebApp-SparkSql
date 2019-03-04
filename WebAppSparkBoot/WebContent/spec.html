@@ -31,6 +31,9 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src=Chart.bundle.js></script>
+	
+	<!--debug -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   </head>
 
   <body>
@@ -68,15 +71,15 @@
       <p>Please make selections for x and y axis attributes for the graph query</p>
       -->
       <div class="row">
-        <div class="col-md-6 text-center dropdown">
+        <div class="col-md-6 text-center">
           
           <button class="btn btn-success" type="button" id="lorenz" onclick="plotLorenz();track_click_element(this.id);">
             Lorenz Curve
           </button>
         </div>
         <div class="col-md-6 text-center">
-          <button class="btn" type="button" id="thiel">
-		  Thiel Curve
+          <button class="btn btn-success" type="button" id="flow_pressure" onclick="plotLorenz();track_click_element(this.id);">
+		   Flow/Pressure
 		  </button>
         </div>
       </div>
