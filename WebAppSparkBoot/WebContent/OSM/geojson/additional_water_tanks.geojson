@@ -1,0 +1,60 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+	{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56592058,13.02289342]
+        },
+        "type": "Feature",
+        "id": 0,
+        "properties": {
+			"ID": 39,
+			"REMARKS": "Syntex of 2000 lts Capacity",
+			"LOCATION": "DEPT. OF ELECTRICAL COMMUNICATION ENGINEERING"
+
+        }
+    },
+	{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56592046,13.0228933] 
+        },
+        "type": "Feature",
+        "id": 1,
+        "properties": {
+			"ID": 40,
+			"REMARKS": "Syntex of 2000 lts Capacity",
+			"LOCATION": "DEPT. OF ELECTRICAL COMMUNICATION ENGINEERING"
+
+        }
+    },
+		{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56591071,13.02291158] 
+        },
+        "type": "Feature",
+        "id": 2,
+        "properties": {
+			"ID": 41,
+			"REMARKS": "Syntex of 2000 lts Capacity",
+			"LOCATION": "DEPT. OF ELECTRICAL COMMUNICATION ENGINEERING"
+
+        }
+    },
+			{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56590067,13.02289433] 
+        },
+        "type": "Feature",
+        "id": 3,
+        "properties": {
+			"ID": 42,
+			"REMARKS": "Syntex of 2000 lts Capacity",
+			"LOCATION": "DEPT. OF ELECTRICAL COMMUNICATION ENGINEERING"
+
+        }
+    }]
+}

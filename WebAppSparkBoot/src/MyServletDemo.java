@@ -138,7 +138,7 @@ public class MyServletDemo extends HttpServlet {
       String user = "";
       String password = "";
       Statement pstmt;
-      String val,label,table,column,aggregate,key,monYear;
+      String val,label,table,column,aggregate,key,monYear,dm_no,fdate,tdate;
       
       // val and label are used if api call is from special query page
       
@@ -153,6 +153,9 @@ public class MyServletDemo extends HttpServlet {
 	  aggregate = request.getParameter("agg");
 	  key = request.getParameter("key");
 	  monYear = request.getParameter("monYear");
+	  dm_no = request.getParameter("dm_no");
+	  fdate = request.getParameter("fdate");
+	  tdate = request.getParameter("tdate");
 	  
 	  //adding mapping from url to string for sql query (for general query)
 	  Map<String, String> table_map = new HashMap<>();
@@ -246,13 +249,15 @@ public class MyServletDemo extends HttpServlet {
     	  }
     	  System.out.println(sql);
     	  System.out.println("val is : "+val);
-    	  System.out.println("label is : "+label);    	  
-    	  
+    	  System.out.println("label is : "+label);
+    	  System.out.println("dm_no is: "+dm_no);
+    	  System.out.println("fdate is: "+fdate);
+    	  System.out.println("tdate is: "+tdate);
     	  //-------------
     	  //String sql = "SELECT " + val +","+ label +" FROM testdb"; //-------------
     	  //String sql = "SELECT dma_code, count(1) from rr2_information where sdid = 'SW4' group by dma_code";
     	  
-    	  if (val!=null || label!=null) {                // ******************************lorenz curve code **************************************
+    	  if (val!=null && label.equals("lorenz")) {                // ******************************lorenz curve code **************************************
 
     		  
     		  Map<String,Integer> population = new HashMap<>();
@@ -378,8 +383,43 @@ public class MyServletDemo extends HttpServlet {
 	    	  out.println(list.toString());    		  
     	  }                              // --------------end of if (val!=null or label!=null)   end of lorenz processing
     	  
+    	  else if (val!=null && label.equals("flow_pressure")) {
+    		  // for flow meter line chart 
+    		  //***********************************************************************CHANGE*****DATE IS HARDCODED**************************************
+    		  //dm_no = "SW3DM0601";
+    		  System.out.println("dm_no is "+dm_no);
+    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "'"; //flowAndPressure
+    		  System.out.println(sql);
+    		  pstmt = conn.createStatement();
+    		  ResultSet rs = pstmt.executeQuery(sql);
+    		  String f1;
+    		  Double f2;
+    		  while(rs.next()) {
+    			  JSONObject obj = new JSONObject();
+    			  f1 = rs.getString(2); // for date 
+    			  f2 = rs.getDouble(1); // for pressure
+    			  
+    			  System.out.println(f1+" "+f2);
+    			  
+    			  
+    			  // dma_code : date and count: pressure
+	    		  obj.put("dma_code", f1); //check, preferable to change
+	        	  obj.put("count", f2);
+	        	  
+	        	  
+	        	  System.out.println(obj.toString());
+	        	  list.add(obj);    			  
+    		  }
+			  System.out.println(list.toString());
+	    	  out.println(list.toString());    		  
+    		  
+    		  
+    	  }
     	  
-    	  else { // IF GENERAL QUERY (14)    
+    	  else { // IF GENERAL QUERY (14) 
+    		  System.out.println(label=="flow_pressure");
+    		  System.out.println(val==null);
+    		  System.out.println("General query");
 	    	  pstmt = conn.createStatement();
 	    	  
 	    	  if (aggregate == "") {
@@ -441,6 +481,7 @@ public class MyServletDemo extends HttpServlet {
 	    	  
     	  	  } // end of else for != box plot
 	    	  
+	    	  //COMMON FOR WHOLE OF GRAPH CODE 
 	    	  System.out.println(list.toString());
 	    	  out.println(list.toString());
 	    	  

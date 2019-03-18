@@ -1,0 +1,1091 @@
+<!doctype html>
+ <html>
+ 	<head>
+ 		<meta charset="utf-8">
+ 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 		<title>EqWater-Dashboard-Map</title>
+		<link rel="shortcut icon" href="png/title_icon.ico" />
+ 		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+ 		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+		<link rel="stylesheet" href="css/leaflet.css" />
+		<link rel="stylesheet" type="text/css" href="css/divisions.css">
+		<link rel="stylesheet" href="css/leaflet-search.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/L.Control.Locate.min.css" />
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/toastr.css"/>
+		
+		
+		<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+		<script src="js/leaflet.js"></script>
+		<script src="js/leaflet.ajax.js"></script>
+		<!--script src="js/spin.js"></script-->
+		<script src="js/leaflet.spin.js"></script>
+		<script src="js/leaflet-search.js"></script>
+		<!--script src="https://raw.githubusercontent.com/eclipse/paho.mqtt.javascript/master/src/mqttws31.js" type="text/javascript"></script-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+		<script src="geojson/building_names_for_search.geojson"></script>
+		<script src="js/L.Control.Locate.min.js"></script>
+		
+		<!--<script src="https://cdn.jsdelivr.net/jquery/3.0.0-beta1/jquery.min.js"></script>-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/toastr.js">
+			
+		</script>
+		<script type="text/javascript">
+		
+		//global variables
+		var dm_no = ""
+		var mtr_analyze = false; //whether to go to use case page
+		var pushedMeters = ['Ashok Nagar SW3DM0604', 'Ashok Nagar SW3DM0601', 'Ashok Nagar SW3DM0602.', 'Ashok Nagar SW3DM0603', 'Azad Nagar SW1DM1201', 'Azad Nagar SW1DM1202', 'Azad Nagar SW1DM1203', 'Banagiri Nagar SW2DM0703', 'Banagiri Nagar SW2DM0701', 'Banagiri Nagar SW2DM0702', 'Banashankari2nd stage SW2DM1001', 'Banashankari2nd stage SW2DM1002', 'Banashankari2nd stage SW2DM1003', 'Banashankari2nd stage SW2DM1004', 'Banashankari2nd stage SW2DM1006', 'Banashankari2nd stage SW2DM1005', 'Banashankari2nd stage SW2DM1007', 'Banashankari2nd stage SW2DM1008', 'Basavanagudi SW3DM1001', 'Basavanagudi SW3DM1003', 'Bandre nagar S1DM0402', 'Bendre Nagar S1DM0401', 'Bendre Nagar S1DM0403', 'BHCS Layout S1DM0701', 'BHCS Layout  S1DM0702 ', 'BHCS Layout  S1DM0703', 'Bhuvaneshwari Nagar SW2DM1601', 'Byrasandra SW4DM0602', 'Byrasandra SW4DM0601', 'Byrasandra SW4DM0603', 'Byrasandra SW4SM0602', 'Byrasandra SW4SM0601', 'CARP Quarters SE3DM0101', 'Chalavadipalya&Chikkal C1DM0101', 'Chalavadipalya&Chikkal C1DM0102', 'Chalavadipalya&Chikkal C1DM0103', 'Chalavadipalya&Chikkal C1DM0107', 'Channammanakere SW2DM0602', 'Channammanakere SW2DM0603', 'Channammanakere SW2DM0601', 'Channammanakere SW2DM0604', 'Chikkalasandra S1DM0201', 'JP Nagar V Phase S2DM0201', 'JP Nagar V Phase S2DM0202', 'JP Nagar V Phase S2DM0203', 'KRMarketChamarajpeteSW1DM0602  ', 'KRMarketChamarajpeteSW1DM0603', 'KRMarketChamarajpeteSW1SM0607', 'KRMarketChamarajpeteSW1SM0606', 'Kalidasa Layout SW3DM0101', 'Kamkya Layout SW2DM1701', 'Kathriguppe SW2DM0401', 'Kathriguppe SW2DM0404', 'Kathriguppe SW2DM0402', 'Kathriguppe SW2DM0403', 'KG Nagara SW1DM0102', 'KG Nagara SW1DM0103', 'KHB Colony SE3DM0401', 'Koramangala 1st Block SE3DM1201', 'Koramangala 1st Block SE3DM1202', 'Koramangala 3rd & 4th SE3DM0301', 'Koramangala 3rd & 4th SE3DM0302', 'Koramangala 3rd & 4th SE3DM0304', 'Koramangala6thBlk SE3DM0501', 'Koramangala6thBlk SE3DM0502', 'Kormangala 7th & 8th SE3DM1101', 'Kormangala 7th & 8th SE3DM0201', 'Kormangala 7th & 8th SE3DM0202', 'KSRP Quarters SE3DM1301', 'Kumarswamy Layout 1st S1DM0901', 'Kumarswamy Layout 1st S1DM0902', 'Kumarswamy Layout 2nd S1DM0601', 'Kuvempu Nagar S3DM0301', 'Kuvempu Nagar S3DM0302', 'Kuvempu Nagar S3DM0303', 'Madiwala S3DM0101', 'Madiwala S3DM0102', 'Maruthi Nagar S3DM0901', 'Mavalli SW1DM0501', 'Mavalli SW1DM0502', 'Mico Layout S3DM0401', 'Muneshwara Block SW3DM0704', 'Muneshwara Block SW3DM0702', 'Muneshwara Block SW3DM0701', 'Nagendra Block SW3DM0401', 'Nagendra Block SW3DM0402', 'New Timber Yard  W1DMA0202', 'New Timber Yard  W1DMA0201', 'New Timber Yard  W1DMA0203', 'New Timber Yard  W1DMA0204', 'Newguddadahalli W1DM0102', 'Newguddadahalli W1DM0103', 'Newguddadahalli W1DM0101', 'Old Guddadahalli SW1DM1001', 'Old Guddadahalli SW1DM1002', 'Padmanabhanaga S1DM0301', 'Padmanabhanagar S1DM0302 ', 'Pragathipura S1DM1001', 'Pragathipura S1DM1002', 'Shakambari Nagar SW4DM0801', 'Shakambari Nagar SW4DM0802', 'Shakambari Nagar SW4SM0801', 'Shastri Nagar SW2DM1101', 'Shastri Nagar SW2DM1102', 'Shastri Nagar SW2DM1103', 'Siddhartha Colony SE3DM0802', 'Siddhartha Colony SE3DM0801', 'Siddhartha Colony SE3BM0801', 'Siddhartha Colony SE3BM0802', 'Siddhartha Colony SE3BM0803', 'Srinagar SW3DM0301', 'Srinagar SW3DM0302', 'Srinagar SW3DM0303', 'Srinivasa Nagar SW2DM0302.', 'Srinivasa Nagar SW2DM0301', 'Srinivasa Nagar SW2DM0303', 'STB SE3DM0601', 'STB SE3DM0602', 'Suddagunte Palya S3DM0804 ', 'Suddagunte Palya S3DM0803', 'Suddagunte Palya S3DM0802', 'Suddagunte Palya S3DM0801', 'Suddagunte Palya S3DM0805', 'Thyagaraja Nagar SW3DM1301', 'Thyagaraja Nagar SW3DM1302', 'Thyagaraja Nagar SW3DM1303', 'Thyagaraja Nagar SW3DM1304', 'Thyagaraja Nagar SW3DM1306', 'V V Puram SW1DM0403', 'V V Puram SW1DM0405', 'Venkateshwar Layout S3DM0501', 'Venkateshwar Layout S3DM0502', 'Venkateshwar Layout S3DM0503', 'Vidya Nagar SW2DM0102', 'Vidya Nagar SW2DM0101', 'Vivekananda Nagar SW2DM0501', 'Venkateshwar Layout S3SM0501']
+
+		function togglebool() {
+			mtr_analyze = mtr_analyze ? false:true;	
+			console.log(mtr_analyze," value is ");
+		}		
+		
+		toastr.options = {
+			"closeButton": false,
+			"debug": false,
+			"positionClass": "toast-top-right",
+			"onclick": null,
+			"showDuration": "300" ,
+			"hideDuration": "1000",
+			"timeOut": "5000",
+			"extendedTimeOut": "1000",
+			"showEasing": "swing",
+			"hideEasing": "linear",
+			"showMethod": "fadeIn",
+			"hideMethod": "fadeOut",
+			"newestOnTop": false
+		};
+		
+		var flag=0;
+		var flag_for_disconnect=0;
+		 function mqttfunction(a)
+        {
+			var wsbroker = "smartx.cds.iisc.ac.in";
+			var wsport = 443;
+			var clientId_first="myclientid_"+Math.floor(Math.random()*10000000);
+			var clientId_second=clientId_first+Math.floor(Math.random()*99999999);
+			var client = new Paho.MQTT.Client(wsbroker, wsport,clientId_second);
+			console.log(clientId_second)
+   
+			client.onConnectionLost = function (responseObject) {
+            flag=0;
+            console.log("connection lost: " + responseObject.errorMessage);
+            toastr.warning("Please check your internet connection and try Subscribing to MQTT again","Warning");
+            a.checked=false;
+            };
+   
+			client.onMessageArrived = function (message) {
+            console.log('message received with topic-',message.destinationName,'|| payload-', message.payloadString);
+            try {
+                function removemarker(){
+                    map.removeLayer(mqtt_marker);
+                    console.log("marker and popup removed");
+                    //map.closePopup(this);
+                    }
+                var latlng1=message.payloadString.split("-");
+                var mqtt_icon = L.icon({
+                iconUrl: 'png/mqtt_icon.png',
+                iconSize: [20, 20],
+                popupAnchor:  [0, -7],
+                });
+                if(a.checked)
+                {
+                if(latlng1[3]==null)
+                    var mqtt_marker = L.marker([latlng1[1],latlng1[2]], {icon: mqtt_icon}).addTo(map).bindPopup(latlng1[0]).openPopup();
+                /*var popup = L.popup()
+                .setLatLng([latlng1[1],latlng1[2]])
+                .setContent(latlng1[0])
+                .openOn(map);*/
+                else
+                    var mqtt_marker = L.marker([latlng1[1],latlng1[2]], {icon: mqtt_icon}).addTo(map).bindPopup(latlng1[0]+'<br/>'+latlng1[3]).openPopup();
+                /*var popup = L.popup()
+                .setLatLng([latlng1[1],latlng1[2]])
+                .setContent(latlng1[0])
+                .openOn(map);*/
+                setTimeout(removemarker, 10000);
+                }
+                }
+                catch(errorMessage){
+                console.log(errorMessage.message);
+                }
+
+            };
+   
+        var options = {
+            userName: 'AppUser',
+            password: 'scdl@App',
+            keepAliveInterval: 15,
+            onSuccess: function () {
+                flag=1;
+                console.log("mqtt connected");
+                // Connection succeeded; subscribe to our topic, you can add multile lines of these
+                client.subscribe('iisc/smartx/mobile/water/data', {qos: 1});
+                console.log("subscribed to the topic");
+                toastr.success("Subscribe success","Success");
+               
+                //use the below if you want to publish to a topic on connect
+                //message = new Paho.MQTT.Message("water leak-13.02261685-77.56570956");
+                //message.destinationName = "iisc/smartx/mobile/water/data";
+                //client.send(message);
+ 
+                },
+            onFailure: function (message) {
+                flag=0;
+                console.log("Connection failed: " + message.errorMessage);
+                toastr.warning("Please check your internet connection and try Subscribing to MQTT again","Warning");
+                a.checked=false;
+                //client.connect(options);
+                }
+            };
+           
+           
+            if(a.checked)
+            {
+               
+                if(!flag)
+                {
+                    console.log("trying to connect to mqtt broker");
+                    client.connect(options);
+                   
+                }
+                else
+                    {
+                    console.log("mqtt connection already running");
+                    toastr.success("Subscribe success","Success");
+                    }
+            }
+            else if(!a.checked)
+            {
+                        toastr.success("Unsubscribe success","Success");
+            }
+        }
+		
+		function uncheck_main(name)
+		{
+			var uncheck_name;
+			if(name=='building_layer')
+				uncheck_name='building_main';
+			else if(name=='water_layer')
+				uncheck_name='water_main';
+			else if(name=='sensor_layer')
+				uncheck_name='sensor_main';
+			
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++){
+				if(inputs[i].type=="checkbox"){
+					if(inputs[i].name==uncheck_name)
+						if(inputs[i].checked)
+							inputs[i].checked=false;
+					if(inputs[i].name=='manage')
+						if(inputs[i].checked)
+							inputs[i].checked=false;
+				}	
+			}
+		}
+			
+		function uncheck_all()
+		{
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox")
+					if(inputs[i].checked)
+						inputs[i].checked=false;
+			}
+		}
+		
+		
+		window.onbeforeunload= function(){uncheck_all();}
+		
+		
+		function change_all_cb_to(a)
+		{
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox") {
+					if(inputs[i].name!="manage")
+						if(a.checked)
+							inputs[i].checked = true;
+						else
+							inputs[i].checked=false;
+				}	  
+			}
+			if(a.checked)
+			{
+						boundary.addTo(map);
+						building_names.addTo(map);
+						building.addTo(map);
+						canal.addTo(map);
+						water_tanks.addTo(map);
+						vc.addTo(map);
+						borewell_points.addTo(map);
+						road_center_line.addTo(map);
+						road_text.addTo(map);
+						pump_house.addTo(map);
+						oht_point.addTo(map);
+						sump.addTo(map);
+						mote.addTo(map);
+						sensors.addTo(map);
+						bwssb_main.addTo(map);
+						glr_point.addTo(map);
+						boundary.bringToBack();
+			}
+			else
+			{
+				map.removeLayer(building_names);
+				map.removeLayer(building);
+				map.removeLayer(canal);
+				map.removeLayer(water_tanks);
+				map.removeLayer(vc);
+				map.removeLayer(borewell_points);
+				map.removeLayer(road_center_line);
+				map.removeLayer(road_text);
+				map.removeLayer(pump_house);
+				map.removeLayer(oht_point);
+				map.removeLayer(sump);
+				map.removeLayer(mote);
+				map.removeLayer(sensors);
+				map.removeLayer(bwssb_main);
+				map.removeLayer(glr_point);
+				map.removeLayer(boundary);
+			}
+		}
+		function change_building_infra(a)
+		{
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox") {
+					if(inputs[i].name=="building_layer")
+						if(a.checked)
+							inputs[i].checked = true;
+						else
+							inputs[i].checked=false;
+				}	  
+			}
+			if(a.checked)
+			{
+						
+						boundary.addTo(map);
+						building_names.addTo(map);
+						building.addTo(map);
+						road_center_line.addTo(map);
+						road_text.addTo(map);
+						boundary.bringToBack();
+			}
+			else
+			{
+				map.removeLayer(building_names);
+				map.removeLayer(building);
+				map.removeLayer(road_center_line);
+				map.removeLayer(road_text);
+				map.removeLayer(boundary);
+				uncheck_main(a.name);
+			}
+		}
+		function change_water_infra(a)
+		{
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox") {
+					if(inputs[i].name=="water_layer")
+						if(a.checked)
+							inputs[i].checked = true;
+						else
+							inputs[i].checked=false;
+				}	  
+			}
+			if(a.checked)
+			{
+
+						canal.addTo(map);
+						water_tanks.addTo(map);
+						vc.addTo(map);
+						borewell_points.addTo(map);
+						pump_house.addTo(map);
+						oht_point.addTo(map);
+						sump.addTo(map);
+						bwssb_main.addTo(map);
+						glr_point.addTo(map);
+						add_water_tank.addTo(map);
+			}
+			else
+			{
+				map.removeLayer(canal);
+				map.removeLayer(water_tanks);
+				map.removeLayer(vc);
+				map.removeLayer(borewell_points);
+				map.removeLayer(pump_house);
+				map.removeLayer(oht_point);
+				map.removeLayer(sump);
+				map.removeLayer(bwssb_main);
+				map.removeLayer(glr_point);
+				map.removeLayer(add_water_tank);
+				uncheck_main(a.name);
+			}
+		}
+		function change_sensor_infra(a)
+		{
+			var inputs=document.getElementsByTagName("input");
+			for(var i = 0; i < inputs.length; i++) {
+				if(inputs[i].type == "checkbox") {
+					if(inputs[i].name=="sensor_layer")
+						if(a.checked)
+							inputs[i].checked = true;
+						else
+							inputs[i].checked=false;
+				}	  
+			}
+			if(a.checked)
+			{
+						mote.addTo(map);
+						sensors.addTo(map);
+			}
+			else
+			{
+				map.removeLayer(mote);
+				map.removeLayer(sensors);
+				uncheck_main(a.name);
+			}
+		}
+		
+		var building=new L.GeoJSON.AJAX(["geojson/building.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#d4c4c4',
+			fillOpacity: 1
+		});
+
+		var building_names=new L.GeoJSON.AJAX(["geojson/building_names.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#d4c4c4',
+			fillOpacity: 1
+		});
+
+		
+		
+		function getRandomColor() {
+		  var letters = '0123456789ABCDEF';
+		  var color = '#';
+		  for (var i = 0; i < 6; i++) {
+		    color += letters[Math.floor(Math.random() * 16)];
+		  }
+		  return color;
+		}		
+		
+		
+		var canal=new L.GeoJSON.AJAX(["geojson/dmad2b.geojson"],
+		{
+			/*onEachFeature: popUp,
+			color: '#00ccff',
+			fillOpacity: 1*/
+
+			style: function (feature, latlng) {
+
+				return {color:getRandomColor(), opacity:1}
+			},			
+			
+			onEachFeature: popUp,
+			
+			fillOpacity: 1
+						
+		});
+		
+		var vc=new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
+		{
+			onEachFeature: popUp,
+			color: 'red',
+			fillOpacity: 1
+		});
+
+		var vc_gdia = new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
+		{
+			style: function (feature, latlng) {
+				//console.log('feature: ',feature.properties.DM_No);
+				if (feature.properties.DIAMETER > 100) {
+					//console.log(f.properties.DIAMETER)
+					return {color:'red', fillOpacity:1.0}
+				}
+				return {color:'green', opacity:0.0}
+			},
+			onEachFeature: popUp,			
+
+			fillOpacity: 1
+		});		
+		
+		var water_tanks=new L.GeoJSON.AJAX(["geojson/d2bleaks.geojson"],
+		{
+			/*onEachFeature: popUp,
+			color: 'black',
+			fillOpacity: 1*/
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/pipeLeak.png' ,     //additional_water_tanks.png',
+						iconSize:     [15,15]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			fillOpacity: 1			
+		});
+
+		var borewell_points=new L.GeoJSON.AJAX(["geojson/testlonglat.geojson"],
+		{
+			/*pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/borewell_icon.png',
+						iconSize:     [10,10]
+					})
+				});
+			},*/
+			pointToLayer: function (feature, latlng) {
+				//console.log('feature: ',feature.properties.DM_No);
+				code = feature.properties.DM_No
+				
+				var found = false;
+				for (i=0;i<pushedMeters.length;i++) {
+					if (pushedMeters[i].includes(code)){
+						console.log(pushedMeters[i])
+						found = true;
+					}
+				}
+				if (found) {
+					return L.marker(latlng, {
+						'icon': L.icon({
+							iconUrl: 'png/borewell_icon.png',
+							iconSize:     [15,15]
+						})
+					});					
+				}
+				else {
+					return L.marker(latlng, {
+						'icon': L.icon({
+							iconUrl: 'png/red.png',
+							iconSize:     [15,15]
+						})
+					});					
+				}
+			},			
+			onEachFeature: popUp,
+			fillOpacity: 1
+		});
+
+		
+		var boundary=new L.GeoJSON.AJAX(["geojson/boundary.geojson"],
+		{
+			/*onEachFeature: popUp,*/
+			color: '#d3d3d3',
+			fillOpacity: 0.5
+		});
+
+		var road_center_line=new L.GeoJSON.AJAX(["geojson/road_center_line.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#808080',
+			fillOpacity: 1
+		});
+
+		var road_text=new L.GeoJSON.AJAX(["geojson/road_text.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/road_icon.png',
+						iconSize:     [5,5]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			fillOpacity: 1
+		});
+
+		var pump_house=new L.GeoJSON.AJAX(["geojson/pump_house.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#80e5ff',
+			fillOpacity: 1
+		});
+
+		var oht_point=new L.GeoJSON.AJAX(["geojson/elevationgeo.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/elevate.png',
+						iconSize:     [15,15]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'black',
+			fillOpacity: 1
+		});
+		
+		var glr_point=new L.GeoJSON.AJAX(["geojson/valves.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/w_sensors_icon.png',
+						iconSize:     [12,12]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'blue',
+			fillOpacity: 1
+		});
+		
+				
+		var bwssb_main=new L.GeoJSON.AJAX(["geojson/bwssb_main.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#00ffff',
+			fillOpacity: 1
+		});
+
+		var sump=new L.GeoJSON.AJAX(["geojson/sump.geojson"],
+		{
+			onEachFeature: popUp,
+			color: '#0000cc',
+			fillOpacity: 1
+		});
+
+		var mote=new L.GeoJSON.AJAX(["geojson/mote.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/mote_icon.png',
+						iconSize:     [18,18]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'blue',
+			fillOpacity: 1
+		});
+		var sensors=new L.GeoJSON.AJAX(["geojson/w_sensors.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/w_sensors_icon.png',
+						iconSize:     [18,18]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'blue',
+			fillOpacity: 1
+		});
+	var add_water_tank=new L.GeoJSON.AJAX(["geojson/additional_water_tanks.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/additional_water_tanks.png',
+						iconSize:     [4,4]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'blue',
+			fillOpacity: 1
+		});
+
+		function layer_handling(cb)
+		{	
+			switch(cb.value)
+			{
+				case "building":
+				{
+					if(cb.checked)
+					{
+						building_names.addTo(map);
+						building.addTo(map);
+					}
+					else
+					{
+						map.removeLayer(building_names);
+						map.removeLayer(building);
+						uncheck_main(cb.name);
+					}
+				}
+				break;
+				case "canal":
+				{
+					if(cb.checked)
+						canal.addTo(map);
+					else
+						{
+						map.removeLayer(canal);
+						uncheck_main(cb.name);
+						}
+				}
+				break;
+				case "watertanks":
+				{
+					if(cb.checked)
+					{
+						water_tanks.addTo(map);
+						add_water_tank.addTo(map);
+					}
+					else
+					{	
+						map.removeLayer(water_tanks);
+						map.removeLayer(add_water_tank);
+						uncheck_main(cb.name);
+					}
+				}
+				break;
+				case "vc":
+				{
+					// has to consider vc_gdia as well				
+					if(cb.checked) {
+						map.removeLayer(vc_gdia)
+						vc.addTo(map);
+					}
+
+					else
+					{
+						map.removeLayer(vc);
+						map.removeLayer(vc_gdia);
+						uncheck_main(cb.name);
+					}
+				}
+				break;
+				//vc_gdia
+				case "vc_gdia":
+				{
+					if(cb.checked) {
+						//remove full water pipeline
+						map.removeLayer(vc);
+					
+						vc_gdia.addTo(map);
+					}
+					else
+					{
+						map.removeLayer(vc_gdia);
+						//add the full water pipeline
+						vc.addTo(map)
+						uncheck_main(cb.name);
+					}
+				}
+				break;				
+				
+				case "borewell":
+				{
+					if(cb.checked)
+						borewell_points.addTo(map);
+					else
+						{map.removeLayer(borewell_points);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "road":
+				{
+					if(cb.checked)
+					{
+						
+						road_center_line.addTo(map);
+						road_text.addTo(map);
+					}
+					else
+					{
+						map.removeLayer(road_center_line);
+						map.removeLayer(road_text);
+						uncheck_main(cb.name);
+						
+					}
+				}
+				break;
+				case "pump_house":
+				{
+					if(cb.checked)
+						pump_house.addTo(map);
+					else
+				{
+						map.removeLayer(pump_house);
+						uncheck_main(cb.name);
+				}
+				}
+				break;
+				case "oht_point":
+				{
+					if(cb.checked)
+						oht_point.addTo(map);
+					else
+						{map.removeLayer(oht_point);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "sump":
+				{
+					if(cb.checked)
+						sump.addTo(map);
+					else
+						{map.removeLayer(sump);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "mote":
+				{
+					if(cb.checked)
+						mote.addTo(map);
+					else
+						{map.removeLayer(mote);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "sensors":
+				{
+					if(cb.checked)
+						sensors.addTo(map);
+					else
+						{map.removeLayer(sensors);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "glr_point":
+				{
+					if(cb.checked)
+						glr_point.addTo(map);
+					else
+						{map.removeLayer(glr_point);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "bwssb_main":
+				{
+					if(cb.checked)
+						bwssb_main.addTo(map);
+					else
+						{map.removeLayer(bwssb_main);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "boundary":
+				{
+					if(cb.checked)
+					{
+						boundary.addTo(map);
+						boundary.bringToBack();
+					}
+					else
+						{map.removeLayer(boundary);
+				uncheck_main(cb.name);}
+				}
+				break;
+				/*case "select":
+					if(cb.checked)
+						change_all_cb_to(true);
+				break;
+				case "deselect":
+					if(cb.checked)
+						change_all_cb_to(false);
+				break;*/
+			}
+		}
+
+		//function to record when clicking on any geojson element
+		function whenClicked(e) {
+			console.log("inside whenClicked")
+			var s = "";
+			//for now I worry content for only meters, if content format is different for others it's fine
+			try {
+				s = e.target._popup._content;
+			} catch (e) {
+				console.log("Error", s)
+				return;
+			}
+
+			var arr = s.match(/[A-Z]+[0-9](DM|BM|SM)[0-9]{4}/gm); // considers DM,BM,SM
+			if (!arr) {
+				console.log("not DM");
+				return;
+			}
+			//store it
+			window.localStorage.setItem("dm_no", arr[0]);			
+			console.log("dm_no : ",arr[0]);
+			var c = window.localStorage.getItem("dm_no")
+			console.log("received: ",c)			
+			
+			// if checkbox is ticked to go analysis
+			if (mtr_analyze) {
+
+				var found = false;
+				for (i=0;i<pushedMeters.length;i++) {
+					if (pushedMeters[i].includes(arr[0])){
+						console.log(pushedMeters[i])
+						found = true;
+					}
+				}
+				if (!found) {
+					alert("No readings found for dm_no : ", arr[0]);
+					return;
+				}
+				else {
+					window.location.href = "../spec.html";
+				}
+				
+				
+			}
+			else {
+				console.log("your choice");
+			}
+			
+			
+			
+			
+
+			/*
+			if (confirm("goto Analysis?")) {
+				
+				window.location.href = "../spec.html";
+			}
+			else {
+				console.log("your choice");
+			}
+			*/
+		}
+
+		
+		function popUp(f,l){
+			var out = [];
+						
+			if (f.properties){
+				for(key in f.properties){
+					if (key == "DM_No"){
+						console.log(f.properties[key])
+					}
+					if(key!="URL")
+						out.push(key+": "+f.properties[key]);
+					else
+				out.push("<a href='"+f.properties[key]+"' target='_blank' data-toggle=\"modal\" data-target=\"#myModal\">Visualize</a>")
+				}
+					l.bindPopup(out.join("<br />"));
+					
+				
+			}
+			
+			l.on({
+				click: whenClicked
+			});			
+			
+		}
+
+		</script>
+ 	</head>
+ 	<body>
+ 		<nav class="navbar-fluid navbar-default navbar-inverse" role="navigation">
+ 			<div class="container-fluid">
+ 				<a class="navbar-brand" href="map.html">Bangalore D2B Map</a>
+ 			</div>
+			 <ul class="nav navbar-nav side-nav navbar-inverse col-xs-10 col-sm-5 col-md-3 col-lg-3 scrollable_for_side_nav_bar">
+
+					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+	
+						<ul>
+							<!--li>
+							<input id="cb_18" type="checkbox" name="water_main" value="water_infra" 	onclick="change_water_infra(this)"><b><label>Water Infrastructure</label></b></input> 
+							</li-->
+							<br><br>
+							<li>
+								<input id="cb_7" type="checkbox" name="water_layer" value="borewell" onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul1" >
+									<label>	Meter	</label>
+								</input><div class="custom_legend"><img class="custom_legend" src="png/borewell_icon.png" /></div> 
+								<ul id="collapsible-ul1" class="collapse" aria-expanded="false">
+									<li>
+										<input id="analysis_mtr" type="checkbox" name="" value=""  onclick="togglebool()"><b><label>Select to go to analysis</label></b></input>
+									</li>
+								</ul> <!-- end of dropdown list -->
+							</li>
+							<li>
+								<input id="cb_3" type="checkbox" name="water_layer" value="canal" 	 	onclick="layer_handling(this)"><label>DMA D2B</label></input><div class="custom_legend" style="background-color:#00ccff;"></div> 							
+							</li>
+							<li>
+								<input id="cb_6" type="checkbox" name="water_layer" value="vc" 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
+									<label>Water Pipeline</label>
+								</input><div class="custom_legend" style="background-color:red;"></div> 
+								
+								<ul id="collapsible-ul2" class="collapse" aria-expanded="false">
+									<li>
+										<input id="g100" type="checkbox" name="water_layer" value="vc_gdia"  onclick="layer_handling(this)"><b><label>Greater than 100 dia</label></b></input>
+									</li>
+								</ul> <!-- end of dropdown list -->
+								
+							</li>
+							<li>
+								<input id="cb_5" type="checkbox" name="water_layer" value="watertanks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
+							</li>
+							<li>
+								<input id="cb_11" type="checkbox" name="water_layer" value="oht_point" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
+							</li>
+							<li>
+								<input id="cb_15" type="checkbox" name="water_layer" value="glr_point" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
+							</li>
+	
+						</ul>
+					</li>			 
+			 
+			 
+					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+						<a href="../index.html" aria-expanded="false">
+							<h4>HOME</h4>
+						</a>
+					</li>
+					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+						<a href="../gen.html" aria-expanded="false">
+							<h4>General Query</h4>
+						</a>
+					</li>					
+					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+						<a href="../spec.html" aria-expanded="false">
+							<h4>Use Cases</h4>
+						</a>
+					</li>			 
+			 
+			 
+					
+
+			</ul>
+ 		</nav>
+
+
+ 		<div id="page-wrapper">
+        <div id="map_cont" class="col-xs-2 col-sm-7 col-md-9 col-lg-9 ">
+				    <div class="row">
+					<div id="map" class="Map_div">
+						<script>
+							var map = L.map('map').setView([12.9327832758, 77.544728419699993],15);   //([13.021583, 77.566949], 15);
+						
+						
+						
+							var osm= new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+							//attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+							attribution: '&copy; <a href="http://dream-lab.serc.iisc.in/">DREAM:Lab</a>, <a href="http://www.iisc.ernet.in/">Indian Institute of Science</a>, 2019.| <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+							}).addTo(map);
+						
+							var data = buildings_for_search;
+
+							var featuresLayer = new L.GeoJSON(data, {
+								style: function(feature) {
+									return {color: feature.properties.color
+											//fillOpacity:0
+									};
+								},
+								onEachFeature: function(feature, marker) {
+									marker.bindPopup('<h4 style="color:'+'black'+'">'+ feature.properties.name +'</h4>');
+								}
+							});
+							map.addLayer(featuresLayer);
+
+							var searchControl = new L.Control.Search({layer: featuresLayer, propertyName: 'name', circleLocation:false});
+
+							searchControl.on('search_locationfound', function(e) {
+							
+							e.layer.setStyle({fillColor: '#d3d3d3', color: '#d3d3d3',});
+							if(e.layer._popup)
+								e.layer.openPopup();
+
+							}).on('search_collapsed', function(e) {
+
+								featuresLayer.eachLayer(function(layer) {	
+									featuresLayer.resetStyle(layer);
+								});	
+							});
+						
+							map.addControl( searchControl ); 
+							/*lc = L.control.locate({
+								follow: true,
+								keepCurrentZoomLevel: true,
+								icon:'borewell_icon',
+								strings: {
+									title: "My Current Location"
+								}
+							}).addTo(map);
+							//end of comment
+							*/
+							
+							
+							
+							L.control.locate({
+								position: 'topleft', // set the location of the control
+								layer: new L.LayerGroup(), // use your own layer for the location marker
+								drawCircle: true, // controls whether a circle is drawn that shows the uncertainty about the location
+								follow: false, // follow the user's location
+								setView: true, // automatically sets the map view to the user's location, enabled if `follow` is true
+								keepCurrentZoomLevel: false, // keep the current map zoom level when displaying the user's location. (if `false`, use maxZoom)
+								stopFollowingOnDrag: false, // stop following when the map is dragged if `follow` is true (deprecated, see below)
+								remainActive: false, // if true locate control remains active on click even if the user's location is in view.
+								markerClass: L.circleMarker, // L.circleMarker or L.marker
+								circleStyle: {}, // change the style of the circle around the user's location
+								markerStyle: {},
+								followCircleStyle: {}, // set difference for the style of the circle around the user's location while following
+								followMarkerStyle: {},
+								icon: 'fa fa-map-marker', // class for icon, fa-location-arrow or fa-map-marker
+								iconLoading: 'fa fa-spinner fa-spin', // class for loading icon
+								iconElementTag: 'span', // tag for the icon element, span or i
+								circlePadding: [0, 0], // padding around accuracy circle, value is passed to setBounds
+								metric: true,
+								
+								showPopup: true, // display a popup when the user click on the inner marker
+								strings: {
+									title: "Current Location", // title of the locate control
+									metersUnit: "meters", // string for metric units
+									feetUnit: "feet", // string for imperial units
+									popup: "You are within {distance} {unit} from this point", // text to appear if user clicks on circle
+									outsideMapBoundsMsg: "You seem located outside the boundaries of the map" // default message for onLocationOutsideMapBounds
+								},
+								locateOptions: {} // define location options e.g enableHighAccuracy: true or maxZoom: 10
+							}).addTo(map);
+							
+						
+
+							map.on('startfollowing', function() {
+								map.on('dragstart', lc._stopFollowing, lc);
+							}).on('stopfollowing', function() {
+								map.off('dragstart', lc._stopFollowing, lc);
+							});
+							
+							
+								
+						</script>
+					<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+
+						<div class="modal fade" id="myModal" role="dialog">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Modal Header</h4>
+									</div>
+									<div class="modal-body">
+										<p>Some text in the modal.</p>
+										<object type="text/html" data="https://www.google.co.in"
+												style="width:100%; height:100%; margin:1%;">
+										</object>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+ 		<!--<script type="text/javascript" src="js/jquery.min.js"></script>-->
+ 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+ 		
+ 	</body>
+ </html>

@@ -7,9 +7,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <!--<link rel="icon" href="../../favicon.ico">-->
+    <link rel="icon" href="dashboard_icon.png">
 
-    <title>Grid Template for Bootstrap</title>
+    <title>EqWater-Dashboard</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!-- Bootstrap core CSS -->
@@ -31,6 +31,8 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src=Chart.bundle.js></script>
+	<script src="hammer.min.js"></script>
+	<script src="chartjs-plugin-zoom.js"></script>	
 	
 	<!--debug -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
@@ -53,6 +55,7 @@
                   <li><a href="index.html">Home</a></li>
                   <li><a href="gen.html">General Query</a></li>
                   <li class="active"><a href="#">Use Cases</a></li>
+				  <li><a href="OSM/map.html">Map</a></li>
                 </ul>
               </nav>
 
@@ -78,13 +81,13 @@
           </button>
         </div>
         <div class="col-md-6 text-center">
-          <button class="btn btn-success" type="button" id="flow_pressure" onclick="plotLorenz();track_click_element(this.id);">
+          <button class="btn btn-success" type="button" id="flow_pressure" onclick="track_click_element(this.id);">
 		   Flow/Pressure
 		  </button>
         </div>
       </div>
 	  
-      <div class="container div_table">
+      <div class="container div_table" id="table_attrib">
         <div class="row">
           <div class="col-md-12">
             <p>please select 1 attribute</p>
@@ -95,7 +98,25 @@
           </div>	  
 		</div>
 	   </div>
-		
+
+      <div class="container div_table" id="flowmeter_dates">
+        <div class="row">
+          <div class="col-md-12">
+            <p>please select the 2 dates</p>
+            <h4 id='dm_no_display'>From and To date for flow-rate chart</h4>
+          </div>	  
+		  
+		  <div class="col-md-6">
+		  From: <input type="date" id="from_date">
+		  </div>
+		  <div class="col-md-6">
+		  To: <input type="date" id="to_date">
+		  </div>		  
+		  
+		</div>
+	  </div>
+
+	   
 	  <!--submit button-->
       <div class="container sub_button">
         <div class="row">

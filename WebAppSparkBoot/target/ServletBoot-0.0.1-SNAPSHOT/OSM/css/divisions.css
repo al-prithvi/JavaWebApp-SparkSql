@@ -1,0 +1,47 @@
+.Layers
+{
+	min-width: 230px;
+}
+.Map_div
+{
+	/*specified in style.css as #map*/
+}
+.bws_div
+{
+	border:2px solid #737373;
+	float:left;
+	width:100%;
+	padding:2px;
+	font-family:Franklin Gothic;
+	color:#333333;
+	background-color:#efefef;
+}
+.Parent
+{
+	float:left;
+	height:100vh;
+	width:100vw;
+	background-color:#efefef;
+}
+.custom_legend {   
+    float: right;
+    width: 20px;
+    height: 15px;
+	border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0,0,0,.2);
+}
+.body{
+   min-width:1000px; /* suppose you want minimun width of 1000px */
+   width: 1000px !important;  /* Firefox will set width as auto */
+   width:1000px;             /* As IE ignores !important it will set width as 1000px; */
+}
+.scrollable_for_side_nav_bar {
+    height: 90vh; /* or any value */
+    overflow-y: auto;
+}
+
+label 
+{
+	color:#fff; 
+}

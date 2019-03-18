@@ -135,3 +135,11 @@ hr {
 .dropdown > button, #date_option > div {
 	display:none;
 }
+
+#table_attrib {
+	display:none;
+}
+
+#flowmeter_dates {
+	display:none;
+}

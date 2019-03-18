@@ -1,0 +1,121 @@
+{
+    "type": "FeatureCollection",
+    "features": [{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56590518,13.02285964]
+        },
+        "type": "Feature",
+        "id": 0,
+        "properties": {
+			"Source":"Network",
+            "Type":"Telemetry",
+            "Id": 2,
+            "Mote": "Source",
+			"Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+			"Topic":"iisc/smartx/network/telemetry/moteid2",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt2"
+        }
+    },
+	{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [ 77.56560892,13.02248009]
+        },
+        "type": "Feature",
+        "id": 1,
+        "properties": {
+			"Source":"Network",
+            "Type":"Telemetry",
+            "Id": 4,
+            "Mote": "Source",
+			"Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+			"Topic":"iisc/smartx/network/telemetry/moteid4",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt4"
+			
+        }
+    },
+	
+	{
+        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56575353,13.02274517]
+        },
+        "type": "Feature",
+        "id": 2,
+        "properties": {
+            "Source":"Network",
+            "Type":"Telemetry",
+            "Id": 3,
+            "Mote": "Relay",
+			"Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+            "Topic":"iisc/smartx/network/telemetry/moteid3",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt3"
+
+        }
+    },
+    {
+        "geometry": {
+            "type": "Point",
+            "coordinates": [ 77.56592891,13.02281012]
+        },
+        "type": "Feature",
+        "id": 3,
+        "properties": {
+            "Source":"Network",
+            "Type":"Telemetry",
+            "Id": 5,
+            "Mote": "Relay",
+			"Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+			"Topic":"iisc/smartx/network/telemetry/moteid5",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt5"
+            
+        }
+    },
+	{
+	        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56570956,13.02261685]
+        },
+        "type": "Feature",
+        "id": 5,
+        "properties": {
+            "Source":"Network",
+            "Type":"Telemetry",
+            "Id": 7,
+            "Mote": "Relay",
+            "Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+            "Topic":"iisc/smartx/network/telemetry/moteid7",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt7"
+        }
+    },
+	{
+	        "geometry": {
+            "type": "Point",
+            "coordinates": [77.56583251,13.02292889]
+        },
+        "type": "Feature",
+        "id": 6,
+        "properties": {
+            "Source":"Network",
+            "Type":"Telemetry",
+            "Id": 6,
+            "Mote": "Source",
+            "Platform": "WiSMote",
+			"Frequency": "2.4GHz",
+			"Channel": 20,
+            "Topic":"iisc/smartx/network/telemetry/moteid6",
+			"URL":"http://smartx.cds.iisc.ac.in/water/rt6"
+        }
+    }]
+}

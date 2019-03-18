@@ -83,9 +83,6 @@ function track_click_element(clicked_id){
 	if (tab_opt == 'dma_monthly'){
 		$("#rr_billing").removeClass('btn-primary').addClass('btn-success');
 		
-		
-	
-		
 	}
 	else {
 		$("#dma_monthly").removeClass('btn-primary').addClass('btn-success');
