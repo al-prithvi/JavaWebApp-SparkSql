@@ -75,7 +75,7 @@ public class MyServletDemo extends HttpServlet {
    }
    
    public void makeJsonForBoxPlot() {
-	  //after sql is executed, make the json which gets sent to front end for box / violing plot
+	  //after sql is executed, make the json which gets sent to front end for box / violin plot
    	  String f1; //-------------
 	  Double f2; 
 	  
@@ -89,11 +89,11 @@ public class MyServletDemo extends HttpServlet {
 			  System.out.println(f1+" "+f2); 
 			  if ( map.containsKey(f1) ) {
 				  //get and add
-				  map.get(f1).add(f2);
+				  map.get(f1).add(Math.floor(f2*100)/100);
 			  }
 			  else {
 				  map.put(f1, new ArrayList<Double>());
-				  map.get(f1).add(f2); 
+				  map.get(f1).add(Math.floor(f2*100)/100); 
 			  }
 			  
 			  
@@ -201,7 +201,7 @@ public class MyServletDemo extends HttpServlet {
     			  
     			  else {
     				  sql = "SELECT " + key + ", " +column_map.get(column) +
-	      						" from "+table_map.get(table)+" where not "+column_map.get(column)+"='NaN'";
+	      						" from "+table_map.get(table)+" where not "+column_map.get(column)+"='NaN' and "+column_map.get(column)+" > 0";
     			  }
     			  
     		  }
@@ -268,7 +268,9 @@ public class MyServletDemo extends HttpServlet {
     		  Map<String,Integer> pop_orig = new HashMap<>();
     		  
     		  //sql = "SELECT dma_code, sum(consumption) from monthly_dma_data group by dma_code";
-    		  sql = "SELECT dma_code, consumption from monthly_dma_data where month='" + val + "'";
+    		  //LOCAL DEBUG
+    		  val = "nov18";
+    		  sql = "SELECT dma_code, net_inflow from monthly_dma_data where month='" + val + "'";
     		  
     		  //1st Query
     		  pstmt = conn.createStatement();
@@ -388,7 +390,7 @@ public class MyServletDemo extends HttpServlet {
     		  //***********************************************************************CHANGE*****DATE IS HARDCODED**************************************
     		  //dm_no = "SW3DM0601";
     		  System.out.println("dm_no is "+dm_no);
-    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "'"; //flowAndPressure
+    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "'"; //flowAndPressure LOCAL DEBUG
     		  System.out.println(sql);
     		  pstmt = conn.createStatement();
     		  ResultSet rs = pstmt.executeQuery(sql);

@@ -41,6 +41,11 @@ var obj_month = JSON.parse('\
 	 {"column":"mar18"}\
 	]');
 
+var obj_dma_options = JSON.parse('\
+	[{"column":"population"},\
+	 {"column":"bore well"},\
+	 {"column":"type of connection"} \
+	]');
 
  $(function(){
 
@@ -107,16 +112,19 @@ function submitquery(){
 		//createChart();
 	}
 	//for debug
+	
 	/*
 	plotLine();
 	document.getElementById('graph').style.display = "block";
 	document.getElementById('dwn').style.display = "block";	
 	*/
 	
+	
+	//for debug here
+	
 	document.getElementById('graph').style.display = "none";
 	document.getElementById('dwn').style.display = "none";	
 	
-	//for debug here
 	
 	console.log("dma is ----",dm_no)
 	//dm_no = "some" 
@@ -328,36 +336,52 @@ function createChart(){
 	    type: 'scatter',
 	    data: {
 	        datasets: [{
-	            label: 'consumption inequity',
+	            label: 'supply inequity',
 	            data: l,
-				borderColor: "blue",
-	            borderWidth: 3,
+				borderColor: "red",
+				backgroundColor : 'rgba(255,0,0,0.5)',
+	            borderWidth: 1,
 				showLine: true,
 				fill:false
 	        },{
 	            label: 'ideal',
 	            data: l2,
-				borderColor: "#3cba9f",
-	            borderWidth: 3,
+				borderColor: "blue",
+				backgroundColor : 'rgba(0,0,255,0.5)',				
+	            borderWidth: 1,
 				showLine: true,
 				fill:false
 	        }]
 	    },
 	    options: {
+	        legend: {
+	            labels: {
+	                fontSize: 15
+	            }
+	        },
 			title : {
 				display: true,
-				text: 'Lorenz Curve (consumption)'
+				text: 'Lorenz Curve (net-inflow) for '+col_opt,
+				fontSize: 15
 			},
 	        scales: {
 				yAxes: [{
+					ticks: {
+						fontSize: 15
+					},
 					scaleLabel: {
 	                	display:true,
-	                	labelString: "cumulative consumption percentile"
+                        fontSize: 20,
+	                	labelString: "cumulative net-inflow percentile"
 					}
 				}],
 	            xAxes: [{
+					ticks: {
+						fontSize: 15
+					},
 					scaleLabel: {
 						display:true,
+                        fontSize: 20,
 						labelString: "cumulative population percentile"
 					},
 	                type: 'linear',
@@ -379,8 +403,8 @@ var valueList = dataLine.map(function (item) {
     return item[1];
 });
 
-
 //retData = [{"dma_code":"2017-10-01 00:00:00.0","count":334.48},{"dma_code":"2017-10-01 00:00:00.0","count":320.64},{"dma_code":"2017-10-01 00:00:00.0","count":349.12},{"dma_code":"2017-10-01 00:00:00.0","count":341.34},{"dma_code":"2017-10-01 00:00:00.0","count":341.09},{"dma_code":"2017-10-01 00:00:00.0","count":319.38},{"dma_code":"2017-10-01 00:00:00.0","count":85.28},{"dma_code":"2017-10-01 00:00:00.0","count":0.59},{"dma_code":"2017-10-01 00:00:00.0","count":0.7},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.44},{"dma_code":"2017-10-01 00:00:00.0","count":0.39},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":3.73},{"dma_code":"2017-10-01 00:00:00.0","count":0.12},{"dma_code":"2017-10-01 00:00:00.0","count":1.78},{"dma_code":"2017-10-01 00:00:00.0","count":1.45},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.35},{"dma_code":"2017-10-01 00:00:00.0","count":0.28},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.06},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.98},{"dma_code":"2017-10-01 00:00:00.0","count":6.94},{"dma_code":"2017-10-01 00:00:00.0","count":6.79},{"dma_code":"2017-10-01 00:00:00.0","count":8.53},{"dma_code":"2017-10-01 00:00:00.0","count":8.69},{"dma_code":"2017-10-01 00:00:00.0","count":7.79},{"dma_code":"2017-10-01 00:00:00.0","count":8.91},{"dma_code":"2017-10-01 00:00:00.0","count":9.82},{"dma_code":"2017-10-01 00:00:00.0","count":7.95},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.95},{"dma_code":"2017-10-01 00:00:00.0","count":0.45},{"dma_code":"2017-10-01 00:00:00.0","count":0.22},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":0.0},{"dma_code":"2017-10-01 00:00:00.0","count":53.09},{"dma_code":"2017-10-01 00:00:00.0","count":274.67},{"dma_code":"2017-10-01 00:00:00.0","count":287.97},{"dma_code":"2017-10-01 00:00:00.0","count":279.08},{"dma_code":"2017-10-01 00:00:00.0","count":271.68},{"dma_code":"2017-10-01 00:00:00.0","count":260.15},{"dma_code":"2017-10-01 00:00:00.0","count":249.92},{"dma_code":"2017-10-01 00:00:00.0","count":249.32},{"dma_code":"2017-10-01 00:00:00.0","count":275.2},{"dma_code":"2017-10-01 00:00:00.0","count":64.41}];
+
 
 
 function retDateToBar (date, jData) {
@@ -413,8 +437,12 @@ function plotLine(data) {
 			return;
 		}
 	
-		retData = data 
+		retData = data 		
 		console.log(data)
+		
+		//end of debug
+		
+		
 		console.log(retData)
 		var dateFormat = 'YYYY-MM-DD HH:mm:ss.f' 
 		var date = moment(retData[0].dma_code, dateFormat);
@@ -461,8 +489,8 @@ LTS  : 'h:mm:ss A',
 			data: {
 				labels: labels,
 				datasets: [{
-					label: 'Line Chart flow-meter readings of DM : '+dm_no,
-					backgroundColor: "rgba(14,72,100,1)",
+					label: 'Flow-meter readings of DM : '+dm_no,
+					backgroundColor: "red",//"rgba(14,72,100,1)",
 					//backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 					borderColor: "red",
 					strokeColor: "brown",
@@ -475,7 +503,13 @@ LTS  : 'h:mm:ss A',
 				}]
 			},
 			options: {
-
+		        legend: {
+		            labels: {
+		                // This more specific font property overrides the global property
+		                fontColor: 'black',
+		                fontSize: 15
+		            }
+		        },
 			pan: {
 						enabled: false,
 						mode: 'xy' //,
@@ -493,12 +527,16 @@ LTS  : 'h:mm:ss A',
 			
 				scales: {
 					xAxes: [{
+	                    ticks: {
+	                        fontSize: 15
+	                    },						
 					scaleLabel: {
 						type: 'time',
 						distribution: 'series',
 						display:true,
+                        fontSize: 20,
 						//x axis label
-						labelString: "date-time"
+						labelString: "Date-time"
 					}
 				}/*,
 				{
@@ -509,10 +547,14 @@ LTS  : 'h:mm:ss A',
 						}
 					}*/],
 					yAxes: [{
+	                    ticks: {
+	                        fontSize: 15
+	                    },
 						scaleLabel: {
 							display: true,
+	                        fontSize: 20,
 							//y axis label
-							labelString: 'flow rate (m3/hr)'
+							labelString: 'Flow rate (m3/hr)'
 						}
 					}]
 				}
@@ -549,6 +591,7 @@ function track_click_element(clicked_id){
 	//change color of clicked button (table)
 	if (tab_opt == 'lorenz'){
 		$("#flow_pressure").removeClass('btn-primary').addClass('btn-success');	
+		$("#dma_info").removeClass('btn-primary').addClass('btn-success');
 		document.getElementById('table_attrib').style.display = "block";
 		//the other table's option has to go
 		document.getElementById('flowmeter_dates').style.display = "none";
@@ -560,12 +603,21 @@ function track_click_element(clicked_id){
 		}
 		*/
 	}
-	else {
+	else if (tab_opt == 'flow_pressure') {
 		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
+		$("#dma_info").removeClass('btn-primary').addClass('btn-success');
 		document.getElementById('flowmeter_dates').style.display = "block";
 		// the other table has got to go
 		document.getElementById('table_attrib').style.display = "none";
 	}	
+	
+	else { // for dma_info
+		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
+		$("#flow_pressure").removeClass('btn-primary').addClass('btn-success');
+		document.getElementById('table_attrib').style.display = "block";
+		//the other table's option has to go
+		document.getElementById('flowmeter_dates').style.display = "none";		
+	}
 	
 	$("#"+tab_opt).removeClass('btn-success').addClass('btn-primary');
 
@@ -606,10 +658,34 @@ function plotLorenz(){
    	
 	//add code to toggle b/w buttons
 	
-	
-	
 }
 
+function dma_options() {
+	//using month_table, rename for general display of options
+	var table = document.getElementById("month_table");
+	table.innerHTML = '<tr></tr>';
+
+	employee_data = '';
+	//refresh selected options
+	
+    employee_data +='<tr>';
+    //employee_data +='<th>Name</th>';
+    //employee_data +='<th>Address</th>';
+    employee_data +='</tr>';
+
+	//obj.forEach(process_fill)
+	generate_cells(obj_dma_options);
+	$('#month_table').append(employee_data)
+
+    //var table = document.getElementById("employee_table");
+    //called function for this
+    record_clicks_for_cells(table);
+    //clear both data for next click
+    employee_data = '';
+   	
+	//add code to toggle b/w buttons	
+	
+}
 
 
 
@@ -683,6 +759,7 @@ function popUp(){
 	}
 	else { // to be completed 
 		window.localStorage.setItem("dm_no", dm_no);
+		window.localStorage.setItem("data", JSON.stringify(retData)); // for Debug:  change data to retData 
 	}
 	
 	var winName = 'myPopupSpec'+(++popCounter);

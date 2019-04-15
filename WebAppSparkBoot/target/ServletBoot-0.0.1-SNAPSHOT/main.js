@@ -773,41 +773,40 @@ boxplotData = {
       title: {
         display: true,
         text: '('+clickedId+') for each '+key_opt
-      }
-    },
-	pan: {
-				enabled: true,
-				mode: 'xy',
-				speed: 2,
-				threshold: 2
-	},
-	zoom: {
-				enabled: true,
-				mode: 'y',
-				limits: {
-					max: 10,
-					min: 0.5
+      },
+		pan: {
+					enabled: true,
+					mode: 'xy',
+					speed: 2,
+					threshold: 2
+		},
+		zoom: {
+					enabled: true,
+					mode: 'y',
+					limits: {
+						max: 10,
+						min: 0.5
+					}
+		},
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero:true
+				},
+				scaleLabel: {
+					display:true,
+					labelString: agg_opt+'('+clickedId+')'
 				}
-	},
-	scales: {
-		yAxes: [{
-			ticks: {
-				beginAtZero:true
-			},
-			scaleLabel: {
-				display:true,
-				labelString: agg_opt+'('+clickedId+')'
+			}],
+			xAxes: [{
+				scaleLabel: {
+					display:true,
+					labelString: key_opt
+				}
 			}
-		}],
-		xAxes: [{
-			scaleLabel: {
-				display:true,
-				labelString: key_opt
-			}
-		}
-		]
-	}	
-	
+			]
+		}	
+    }//options end	
 	
   });	
   //myChart.options.zoom.enabled = false;

@@ -216,76 +216,24 @@
 			}
 			if(a.checked)
 			{
-						boundary.addTo(map);
-						building_names.addTo(map);
-						building.addTo(map);
-						canal.addTo(map);
-						water_tanks.addTo(map);
-						vc.addTo(map);
+						d2b.addTo(map);
+						d2b_leaks.addTo(map);
+						wtr_pipe.addTo(map);;
+						elevation.addTo(map);
+						valves.addTo(map);
 						borewell_points.addTo(map);
-						road_center_line.addTo(map);
-						road_text.addTo(map);
-						pump_house.addTo(map);
-						oht_point.addTo(map);
-						sump.addTo(map);
-						mote.addTo(map);
-						sensors.addTo(map);
-						bwssb_main.addTo(map);
-						glr_point.addTo(map);
-						boundary.bringToBack();
 			}
 			else
 			{
-				map.removeLayer(building_names);
-				map.removeLayer(building);
-				map.removeLayer(canal);
-				map.removeLayer(water_tanks);
-				map.removeLayer(vc);
+				map.removeLayer(d2b);
+				map.removeLayer(d2b_leaks);
+				map.removeLayer(wtr_pipe);
+				map.removeLayer(elevation);
+				map.removeLayer(valves);
 				map.removeLayer(borewell_points);
-				map.removeLayer(road_center_line);
-				map.removeLayer(road_text);
-				map.removeLayer(pump_house);
-				map.removeLayer(oht_point);
-				map.removeLayer(sump);
-				map.removeLayer(mote);
-				map.removeLayer(sensors);
-				map.removeLayer(bwssb_main);
-				map.removeLayer(glr_point);
-				map.removeLayer(boundary);
 			}
 		}
-		function change_building_infra(a)
-		{
-			var inputs=document.getElementsByTagName("input");
-			for(var i = 0; i < inputs.length; i++) {
-				if(inputs[i].type == "checkbox") {
-					if(inputs[i].name=="building_layer")
-						if(a.checked)
-							inputs[i].checked = true;
-						else
-							inputs[i].checked=false;
-				}	  
-			}
-			if(a.checked)
-			{
-						
-						boundary.addTo(map);
-						building_names.addTo(map);
-						building.addTo(map);
-						road_center_line.addTo(map);
-						road_text.addTo(map);
-						boundary.bringToBack();
-			}
-			else
-			{
-				map.removeLayer(building_names);
-				map.removeLayer(building);
-				map.removeLayer(road_center_line);
-				map.removeLayer(road_text);
-				map.removeLayer(boundary);
-				uncheck_main(a.name);
-			}
-		}
+
 		function change_water_infra(a)
 		{
 			var inputs=document.getElementsByTagName("input");
@@ -301,73 +249,27 @@
 			if(a.checked)
 			{
 
-						canal.addTo(map);
-						water_tanks.addTo(map);
-						vc.addTo(map);
+						d2b.addTo(map);
+						d2b_leaks.addTo(map);
+						wtr_pipe.addTo(map);
+						elevation.addTo(map);
+						valves.addTo(map);
 						borewell_points.addTo(map);
-						pump_house.addTo(map);
-						oht_point.addTo(map);
-						sump.addTo(map);
-						bwssb_main.addTo(map);
-						glr_point.addTo(map);
-						add_water_tank.addTo(map);
 			}
 			else
 			{
-				map.removeLayer(canal);
-				map.removeLayer(water_tanks);
-				map.removeLayer(vc);
+				map.removeLayer(d2b);
+				map.removeLayer(d2b_leaks);
+				map.removeLayer(wtr_pipe);
+				map.removeLayer(elevation);
+				map.removeLayer(valves);
 				map.removeLayer(borewell_points);
-				map.removeLayer(pump_house);
-				map.removeLayer(oht_point);
-				map.removeLayer(sump);
-				map.removeLayer(bwssb_main);
-				map.removeLayer(glr_point);
-				map.removeLayer(add_water_tank);
-				uncheck_main(a.name);
+				
 			}
 		}
-		function change_sensor_infra(a)
-		{
-			var inputs=document.getElementsByTagName("input");
-			for(var i = 0; i < inputs.length; i++) {
-				if(inputs[i].type == "checkbox") {
-					if(inputs[i].name=="sensor_layer")
-						if(a.checked)
-							inputs[i].checked = true;
-						else
-							inputs[i].checked=false;
-				}	  
-			}
-			if(a.checked)
-			{
-						mote.addTo(map);
-						sensors.addTo(map);
-			}
-			else
-			{
-				map.removeLayer(mote);
-				map.removeLayer(sensors);
-				uncheck_main(a.name);
-			}
-		}
-		
-		var building=new L.GeoJSON.AJAX(["geojson/building.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#d4c4c4',
-			fillOpacity: 1
-		});
-
-		var building_names=new L.GeoJSON.AJAX(["geojson/building_names.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#d4c4c4',
-			fillOpacity: 1
-		});
 
 		
-		
+	
 		function getRandomColor() {
 		  var letters = '0123456789ABCDEF';
 		  var color = '#';
@@ -378,7 +280,7 @@
 		}		
 		
 		
-		var canal=new L.GeoJSON.AJAX(["geojson/dmad2b.geojson"],
+		var d2b=new L.GeoJSON.AJAX(["geojson/dmad2b.geojson"],
 		{
 			/*onEachFeature: popUp,
 			color: '#00ccff',
@@ -395,14 +297,14 @@
 						
 		});
 		
-		var vc=new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
+		var wtr_pipe=new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
 		{
 			onEachFeature: popUp,
 			color: 'red',
 			fillOpacity: 1
 		});
 
-		var vc_gdia = new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
+		var wtr_pipe_gdia = new L.GeoJSON.AJAX(["geojson/waterKali.geojson"],
 		{
 			style: function (feature, latlng) {
 				//console.log('feature: ',feature.properties.DM_No);
@@ -417,7 +319,7 @@
 			fillOpacity: 1
 		});		
 		
-		var water_tanks=new L.GeoJSON.AJAX(["geojson/d2bleaks.geojson"],
+		var d2b_leaks=new L.GeoJSON.AJAX(["geojson/d2bleaks.geojson"],
 		{
 			/*onEachFeature: popUp,
 			color: 'black',
@@ -425,7 +327,7 @@
 			pointToLayer: function (feature, latlng) {
 				return L.marker(latlng, {
 					'icon': L.icon({
-						iconUrl: 'png/pipeLeak.png' ,     //additional_water_tanks.png',
+						iconUrl: 'png/pipeLeak.png' ,     //additional_d2b_leaks.png',
 						iconSize:     [15,15]
 					})
 				});
@@ -434,6 +336,37 @@
 			fillOpacity: 1			
 		});
 
+
+		var elevation=new L.GeoJSON.AJAX(["geojson/elevationgeo.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/elevate.png',
+						iconSize:     [15,15]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'black',
+			fillOpacity: 1
+		});
+		
+		var valves=new L.GeoJSON.AJAX(["geojson/valves.geojson"],
+		{
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					'icon': L.icon({
+						iconUrl: 'png/w_sensors_icon.png',
+						iconSize:     [12,12]
+					})
+				});
+			},
+			onEachFeature: popUp,
+			color: 'blue',
+			fillOpacity: 1
+		});
+		
 		var borewell_points=new L.GeoJSON.AJAX(["geojson/testlonglat.geojson"],
 		{
 			/*pointToLayer: function (feature, latlng) {
@@ -475,211 +408,93 @@
 			onEachFeature: popUp,
 			fillOpacity: 1
 		});
-
 		
-		var boundary=new L.GeoJSON.AJAX(["geojson/boundary.geojson"],
-		{
-			/*onEachFeature: popUp,*/
-			color: '#d3d3d3',
-			fillOpacity: 0.5
-		});
-
-		var road_center_line=new L.GeoJSON.AJAX(["geojson/road_center_line.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#808080',
-			fillOpacity: 1
-		});
-
-		var road_text=new L.GeoJSON.AJAX(["geojson/road_text.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/road_icon.png',
-						iconSize:     [5,5]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			fillOpacity: 1
-		});
-
-		var pump_house=new L.GeoJSON.AJAX(["geojson/pump_house.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#80e5ff',
-			fillOpacity: 1
-		});
-
-		var oht_point=new L.GeoJSON.AJAX(["geojson/elevationgeo.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/elevate.png',
-						iconSize:     [15,15]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			color: 'black',
-			fillOpacity: 1
-		});
 		
-		var glr_point=new L.GeoJSON.AJAX(["geojson/valves.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/w_sensors_icon.png',
-						iconSize:     [12,12]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			color: 'blue',
-			fillOpacity: 1
-		});
-		
-				
-		var bwssb_main=new L.GeoJSON.AJAX(["geojson/bwssb_main.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#00ffff',
-			fillOpacity: 1
-		});
-
-		var sump=new L.GeoJSON.AJAX(["geojson/sump.geojson"],
-		{
-			onEachFeature: popUp,
-			color: '#0000cc',
-			fillOpacity: 1
-		});
-
-		var mote=new L.GeoJSON.AJAX(["geojson/mote.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/mote_icon.png',
-						iconSize:     [18,18]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			color: 'blue',
-			fillOpacity: 1
-		});
-		var sensors=new L.GeoJSON.AJAX(["geojson/w_sensors.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/w_sensors_icon.png',
-						iconSize:     [18,18]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			color: 'blue',
-			fillOpacity: 1
-		});
-	var add_water_tank=new L.GeoJSON.AJAX(["geojson/additional_water_tanks.geojson"],
-		{
-			pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/additional_water_tanks.png',
-						iconSize:     [4,4]
-					})
-				});
-			},
-			onEachFeature: popUp,
-			color: 'blue',
-			fillOpacity: 1
-		});
 
 		function layer_handling(cb)
 		{	
 			switch(cb.value)
 			{
-				case "building":
+
+				case "d2b":
 				{
 					if(cb.checked)
-					{
-						building_names.addTo(map);
-						building.addTo(map);
-					}
-					else
-					{
-						map.removeLayer(building_names);
-						map.removeLayer(building);
-						uncheck_main(cb.name);
-					}
-				}
-				break;
-				case "canal":
-				{
-					if(cb.checked)
-						canal.addTo(map);
+						d2b.addTo(map);
 					else
 						{
-						map.removeLayer(canal);
+						map.removeLayer(d2b);
 						uncheck_main(cb.name);
 						}
 				}
 				break;
-				case "watertanks":
+				case "d2b_leaks":
 				{
 					if(cb.checked)
 					{
-						water_tanks.addTo(map);
+						d2b_leaks.addTo(map);
 						add_water_tank.addTo(map);
 					}
 					else
 					{	
-						map.removeLayer(water_tanks);
+						map.removeLayer(d2b_leaks);
 						map.removeLayer(add_water_tank);
 						uncheck_main(cb.name);
 					}
 				}
 				break;
-				case "vc":
+				case "wtr_pipe":
 				{
-					// has to consider vc_gdia as well				
+					// has to consider wtr_pipe_gdia as well				
 					if(cb.checked) {
-						map.removeLayer(vc_gdia)
-						vc.addTo(map);
+						map.removeLayer(wtr_pipe_gdia)
+						wtr_pipe.addTo(map);
 					}
 
 					else
 					{
-						map.removeLayer(vc);
-						map.removeLayer(vc_gdia);
+						map.removeLayer(wtr_pipe);
+						map.removeLayer(wtr_pipe_gdia);
 						uncheck_main(cb.name);
 					}
 				}
 				break;
-				//vc_gdia
-				case "vc_gdia":
+				//wtr_pipe_gdia
+				case "wtr_pipe_gdia":
 				{
 					if(cb.checked) {
 						//remove full water pipeline
-						map.removeLayer(vc);
+						map.removeLayer(wtr_pipe);
 					
-						vc_gdia.addTo(map);
+						wtr_pipe_gdia.addTo(map);
 					}
 					else
 					{
-						map.removeLayer(vc_gdia);
+						map.removeLayer(wtr_pipe_gdia);
 						//add the full water pipeline
-						vc.addTo(map)
+						wtr_pipe.addTo(map)
 						uncheck_main(cb.name);
 					}
 				}
 				break;				
 				
+				case "elevation":
+				{
+					if(cb.checked)
+						elevation.addTo(map);
+					else
+						{map.removeLayer(elevation);
+				uncheck_main(cb.name);}
+				}
+				break;
+				case "valves":
+				{
+					if(cb.checked)
+						valves.addTo(map);
+					else
+						{map.removeLayer(valves);
+				uncheck_main(cb.name);}
+				}
+				break;
 				case "borewell":
 				{
 					if(cb.checked)
@@ -689,108 +504,7 @@
 				uncheck_main(cb.name);}
 				}
 				break;
-				case "road":
-				{
-					if(cb.checked)
-					{
-						
-						road_center_line.addTo(map);
-						road_text.addTo(map);
-					}
-					else
-					{
-						map.removeLayer(road_center_line);
-						map.removeLayer(road_text);
-						uncheck_main(cb.name);
-						
-					}
-				}
-				break;
-				case "pump_house":
-				{
-					if(cb.checked)
-						pump_house.addTo(map);
-					else
-				{
-						map.removeLayer(pump_house);
-						uncheck_main(cb.name);
-				}
-				}
-				break;
-				case "oht_point":
-				{
-					if(cb.checked)
-						oht_point.addTo(map);
-					else
-						{map.removeLayer(oht_point);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "sump":
-				{
-					if(cb.checked)
-						sump.addTo(map);
-					else
-						{map.removeLayer(sump);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "mote":
-				{
-					if(cb.checked)
-						mote.addTo(map);
-					else
-						{map.removeLayer(mote);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "sensors":
-				{
-					if(cb.checked)
-						sensors.addTo(map);
-					else
-						{map.removeLayer(sensors);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "glr_point":
-				{
-					if(cb.checked)
-						glr_point.addTo(map);
-					else
-						{map.removeLayer(glr_point);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "bwssb_main":
-				{
-					if(cb.checked)
-						bwssb_main.addTo(map);
-					else
-						{map.removeLayer(bwssb_main);
-				uncheck_main(cb.name);}
-				}
-				break;
-				case "boundary":
-				{
-					if(cb.checked)
-					{
-						boundary.addTo(map);
-						boundary.bringToBack();
-					}
-					else
-						{map.removeLayer(boundary);
-				uncheck_main(cb.name);}
-				}
-				break;
-				/*case "select":
-					if(cb.checked)
-						change_all_cb_to(true);
-				break;
-				case "deselect":
-					if(cb.checked)
-						change_all_cb_to(false);
-				break;*/
+
 			}
 		}
 
@@ -840,20 +554,7 @@
 			else {
 				console.log("your choice");
 			}
-			
-			
-			
-			
 
-			/*
-			if (confirm("goto Analysis?")) {
-				
-				window.location.href = "../spec.html";
-			}
-			else {
-				console.log("your choice");
-			}
-			*/
 		}
 
 		
@@ -908,28 +609,28 @@
 								</ul> <!-- end of dropdown list -->
 							</li>
 							<li>
-								<input id="cb_3" type="checkbox" name="water_layer" value="canal" 	 	onclick="layer_handling(this)"><label>DMA D2B</label></input><div class="custom_legend" style="background-color:#00ccff;"></div> 							
+								<input id="cb_3" type="checkbox" name="water_layer" value="d2b" 	 	onclick="layer_handling(this)"><label>DMA D2B</label></input><div class="custom_legend" style="background-color:#00ccff;"></div> 							
 							</li>
 							<li>
-								<input id="cb_6" type="checkbox" name="water_layer" value="vc" 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
+								<input id="cb_6" type="checkbox" name="water_layer" value="wtr_pipe" 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
 									<label>Water Pipeline</label>
 								</input><div class="custom_legend" style="background-color:red;"></div> 
 								
 								<ul id="collapsible-ul2" class="collapse" aria-expanded="false">
 									<li>
-										<input id="g100" type="checkbox" name="water_layer" value="vc_gdia"  onclick="layer_handling(this)"><b><label>Greater than 100 dia</label></b></input>
+										<input id="g100" type="checkbox" name="water_layer" value="wtr_pipe_gdia"  onclick="layer_handling(this)"><b><label>Greater than 100 dia</label></b></input>
 									</li>
 								</ul> <!-- end of dropdown list -->
 								
 							</li>
 							<li>
-								<input id="cb_5" type="checkbox" name="water_layer" value="watertanks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
+								<input id="cb_5" type="checkbox" name="water_layer" value="d2b_leaks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
 							</li>
 							<li>
-								<input id="cb_11" type="checkbox" name="water_layer" value="oht_point" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
+								<input id="cb_11" type="checkbox" name="water_layer" value="elevation" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
 							</li>
 							<li>
-								<input id="cb_15" type="checkbox" name="water_layer" value="glr_point" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
+								<input id="cb_15" type="checkbox" name="water_layer" value="valves" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
 							</li>
 	
 						</ul>
