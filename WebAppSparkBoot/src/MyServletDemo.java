@@ -390,7 +390,8 @@ public class MyServletDemo extends HttpServlet {
     		  //***********************************************************************CHANGE*****DATE IS HARDCODED**************************************
     		  //dm_no = "SW3DM0601";
     		  System.out.println("dm_no is "+dm_no);
-    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "'"; //flowAndPressure LOCAL DEBUG
+    		  //*************************************************************HARD CODED*****************REMOVE AFTER DATA CHECK*************************************
+    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "' and flow_rate>=0"; //flowAndPressure LOCAL DEBUG
     		  System.out.println(sql);
     		  pstmt = conn.createStatement();
     		  ResultSet rs = pstmt.executeQuery(sql);
