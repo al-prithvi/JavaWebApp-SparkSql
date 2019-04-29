@@ -47,6 +47,17 @@ public class MyServletDemo extends HttpServlet {
 
     ResultSet globRs;
     JSONArray list;
+    Connection conn;
+    
+    
+    String url = "jdbc:hive2://localhost:10000/";
+    String dbName = "default";  //-----------
+    String driver = "org.apache.hive.jdbc.HiveDriver";
+    String user = "";
+    String password = "";
+    Statement pstmt;
+    String val,label,table,column,aggregate,key,monYear,dm_no,fdate,tdate;    
+    
     
    public void init() throws ServletException {
       mymsg = "Hello World!";
@@ -116,6 +127,104 @@ public class MyServletDemo extends HttpServlet {
 	   
    }
    
+
+	public void rrInformationJson() {
+		String sql="";
+		ResultSet rs;
+		String f1;
+		Integer f2;
+		Statement pstmt;
+		String selectString, groupString;
+		
+		Map<String,List<Integer>> map=new HashMap<String,List<Integer>>();
+		
+		if (key == "") {
+			groupString = "";
+			selectString = "select ";
+		}
+		else {
+			groupString = " group by i.dma_code";
+			selectString = "select i.dma_code, ";
+		}
+		
+		//HARDCODED
+		//VMCode
+		sql = selectString + "count(*) from rr2_billing b inner join rr2_information i on i.rr_number=b.rr_number where month_year='1016'"+groupString;
+		
+
+		try {
+			pstmt = conn.createStatement();
+			rs = pstmt.executeQuery(sql);
+			while(rs.next()) // parsing result
+			{
+				if (key=="") {
+					f1 = "dma_code";
+					f2 = rs.getInt(1);
+				}
+				else {
+					f1 = rs.getString(1); // dma_code
+					f2 = rs.getInt(2); //count
+				}
+				System.out.println(f1+" "+f2); 
+				
+				map.put(f1, new ArrayList<Integer>());
+				map.get(f1).add(f2);   
+			  
+			} // END OF WHILE	
+
+			//HARDCODED
+			//VMCode
+			sql = selectString + "count(*) from rr2_billing b inner join rr2_information i on i.rr_number=b.rr_number where b.bore_well_used='True' and month_year='1016'"+groupString;
+			pstmt = conn.createStatement();
+			rs = pstmt.executeQuery(sql);		
+
+			while(rs.next()) // parsing result
+			{
+				System.out.println("testing 2nd");
+				if (key=="") {
+					f1 = "dma_code";
+					f2 = rs.getInt(1);
+				}
+				else {
+					f1 = rs.getString(1); // dma_code
+					f2 = rs.getInt(2); //count
+				}
+				System.out.println(f1+" "+f2); 
+				
+				map.get(f1).add(f2);
+			  
+			} // END OF WHILE	
+
+			for(Map.Entry m:map.entrySet()){ 
+				JSONObject obj = new JSONObject();
+				
+				obj.put("dma_code", m.getKey()); //----------------
+				
+				if (map.get(m.getKey()).size() == 1) {
+					ArrayList<Integer> a = new ArrayList<Integer>();
+					a.addAll( map.get(m.getKey())  );
+					a.add(0);
+					obj.put("count", a);
+				}				
+				
+				else {
+					obj.put("count", m.getValue());   // name will be used in javascript when reading the response
+					
+				}
+				
+				System.out.println(obj.toString());
+				
+				list.add(obj);
+			}
+		
+		} catch (Exception e) {
+			System.out.println("******Error********"+e);
+		}
+		
+		System.out.println(list.toString());
+	   
+	} //end of rrInformationJson
+   	
    
    
    public void doGet(HttpServletRequest request, 
@@ -131,14 +240,7 @@ public class MyServletDemo extends HttpServlet {
       
       //------------
       
-      
-      String url = "jdbc:hive2://localhost:10000/";
-      String dbName = "default";  //-----------
-      String driver = "org.apache.hive.jdbc.HiveDriver";
-      String user = "";
-      String password = "";
-      Statement pstmt;
-      String val,label,table,column,aggregate,key,monYear,dm_no,fdate,tdate;
+
       
       // val and label are used if api call is from special query page
       
@@ -181,7 +283,7 @@ public class MyServletDemo extends HttpServlet {
 	  //CODE FOR SPARK CONNECTION
       try {
     	  Class.forName(driver).newInstance();
-    	  Connection conn = DriverManager.getConnection(url+dbName, user, password);
+    	  conn = DriverManager.getConnection(url+dbName, user, password);
     	  
     	  //-------------
     	  String sql="";
@@ -209,7 +311,7 @@ public class MyServletDemo extends HttpServlet {
     		  
     		  // code to check if key_opt is null, so only one set of values
 	    	  else {
-	    		  if (key=="") {
+	    		  if (key.equals("")) {
 	    			  System.out.println("the key is null ---------------******************");
 	    			  
 	    			  groupBy = "";
@@ -218,12 +320,16 @@ public class MyServletDemo extends HttpServlet {
 			      					" from "+table_map.get(table)+" where not "+column_map.get(column)+"='NaN' and month_year="+monYear;
 	    			  }
 	    			  
-	    			  else {
+	    			  else if (table.equals("dma_monthly")) {
 	    				  sql = "SELECT " +aggregate+"("+column_map.get(column)+")" +
 		      					" from "+table_map.get(table)+" where not "+column_map.get(column)+"='NaN'";
 	    			  }
 	    			  
-	    		  }
+	    			  else if (table.equals("rr_info")) {
+	    				  rrInformationJson();
+	    			  }
+	    			  
+	    		  } // end of "if key is null"
 	    		  else {
 	    			  if (table.equals("rr_billing")) {
 	    				  groupBy = " group by i.dma_code";
@@ -233,10 +339,13 @@ public class MyServletDemo extends HttpServlet {
 	    				  System.out.println("column values is "+column_map.get(column));
 	    				  
 	    			  }
-	    			  else {
+	    			  else if (table.equals("dma_monthly")) {
 	    				  groupBy = " group by " + key;
 	    				  sql = "SELECT " + key + ", "+aggregate+"("+column_map.get(column)+")" +
 	    	      					" from "+table_map.get(table)+ groupBy;
+	    			  }
+	    			  else if (table.equals("rr_info")) {
+	    				  rrInformationJson();
 	    			  }
 	    		  }
 
@@ -383,7 +492,7 @@ public class MyServletDemo extends HttpServlet {
     		  
 			  System.out.println(list.toString());
 	    	  out.println(list.toString());    		  
-    	  }                              // --------------end of if (val!=null or label!=null)   end of lorenz processing
+    	  }                              // --------------end of if (val!=null or label!=null)   end of lorenz processing ******************************************************
     	  
     	  else if (val!=null && label.equals("flow_pressure")) {
     		  // for flow meter line chart 
@@ -391,6 +500,7 @@ public class MyServletDemo extends HttpServlet {
     		  //dm_no = "SW3DM0601";
     		  System.out.println("dm_no is "+dm_no);
     		  //*************************************************************HARD CODED*****************REMOVE AFTER DATA CHECK*************************************
+    		  //VMCode
     		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "' and flow_rate>=0"; //flowAndPressure LOCAL DEBUG
     		  System.out.println(sql);
     		  pstmt = conn.createStatement();
@@ -431,59 +541,65 @@ public class MyServletDemo extends HttpServlet {
 	    	  }
 	    	  
 	    	  else {
-				  ResultSet rs = pstmt.executeQuery(sql);
-				  
-				  System.out.println("spark sql connection successful");
-				  String f1; //-------------
-				  Integer f2;
-				  int invalid = 0, invalid2 = 0;// remove
+	    		  if (!table.equals("rr_info")) {
+					  ResultSet rs = pstmt.executeQuery(sql);
+					  
+					  System.out.println("spark sql connection successful");
+					  String f1; //-------------
+					  Integer f2;
+					  int invalid = 0, invalid2 = 0;// remove
+			    	  
+			    	  //making json object
+			    	  while(rs.next())
+			    	  {
+			    		  JSONObject obj = new JSONObject();
+			    		  
+			    		  if (key == "") {
+			    			  f1 = "dma_code";
+			    			  f2 = rs.getInt(1);
+			    		  }
+			    		  else {
+			    			  f1 = rs.getString(1); //----------------------
+			    		  
+			    			  f2 = rs.getInt(2);
+			    		  }
+			    		  
+			    		  System.out.println(f1+" "+f2);
+			    		  
+			    		  //****REMOVE WITH INVALID VARIABLE 
+			    		  /*
+			    		  if(f1.equals("SW4DMA06")) {
+			    			  if (invalid == 0) {
+			    				  invalid++;
+			    			  }
+			    			  else {
+			    				  continue;
+			    			  }
+			    		  }
+			    		  if (f2.equals("SE3DMA08")) {
+			    			  if (invalid2 == 0) {
+			    				  invalid2++;
+			    			  }
+			    			  else {
+			    				  continue;
+			    			  }	  
+			    		  }*/
+			    		  
+			    		  
+			    		  
+			    		  obj.put("dma_code", f1); //----------------
+			        	  obj.put("count", f2);
+			        	  
+			        	  
+			        	  System.out.println(obj.toString());
+			        	  list.add(obj);
+			    	  } // END OF WHILE
 		    	  
-		    	  //making json object
-		    	  while(rs.next())
-		    	  {
-		    		  JSONObject obj = new JSONObject();
+	    	  	  } // end of else for != box plot
+		    	  
 		    		  
-		    		  if (key == "") {
-		    			  f1 = "dma_code";
-		    			  f2 = rs.getInt(1);
-		    		  }
-		    		  else {
-		    			  f1 = rs.getString(1); //----------------------
-		    		  
-		    			  f2 = rs.getInt(2);
-		    		  }
-		    		  
-		    		  System.out.println(f1+" "+f2);
-		    		  
-		    		  if(f1.equals("SW4DMA06")) {
-		    			  if (invalid == 0) {
-		    				  invalid++;
-		    			  }
-		    			  else {
-		    				  continue;
-		    			  }
-		    		  }
-		    		  if (f2.equals("SE3DMA08")) {
-		    			  if (invalid2 == 0) {
-		    				  invalid2++;
-		    			  }
-		    			  else {
-		    				  continue;
-		    			  }	  
-		    		  }
-		    		  
-		    		  
-		    		  
-		    		  obj.put("dma_code", f1); //----------------
-		        	  obj.put("count", f2);
-		        	  
-		        	  
-		        	  System.out.println(obj.toString());
-		        	  list.add(obj);
-		    	  } // END OF WHILE
-	    	  
-    	  	  } // end of else for != box plot
-	    	  
+	    	  }
+	    		  
 	    	  //COMMON FOR WHOLE OF GRAPH CODE 
 	    	  System.out.println(list.toString());
 	    	  out.println(list.toString());

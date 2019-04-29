@@ -36,6 +36,10 @@ var obj3 = JSON.parse('\
 	 {"column":"ufw (million litres)"}\
 	]');
 
+// for borewell vs population
+var obj4 = JSON.parse('\
+	[{"column":"Borewell V RR units"}]');	
+	
 //mapping from column selected to api
 var col_to_api = {
 		  "previous reading (million litres)": "prev",
@@ -44,11 +48,15 @@ var col_to_api = {
 		  "consumption (million litres)":"con",
 		  "consumption(million litres)":"conmon",
 		  "Net inflow (million litres)":"net",
-		  "ufw (million litres)":"ufw"
+		  "ufw (million litres)":"ufw",
+		  "Borewell V RR units":"bore"
 };
 
 
 var agg_str = ["min","max","avg","count", "sum"]
+//****REFACTOR  could add option for which are valid options for above data struct
+var agg_str_bore = ["count"]
+
 
 var rr_billing_key = ["dma_code"];
 var dma_month_key = ["dma_code", "month"];
@@ -61,6 +69,7 @@ var key_data = '';
 
 lab = [];
 l= [];
+l2 = [];
 
 var data;
 var clickedId;
@@ -82,10 +91,15 @@ function track_click_element(clicked_id){
 	//change color of clicked button (table)
 	if (tab_opt == 'dma_monthly'){
 		$("#rr_billing").removeClass('btn-primary').addClass('btn-success');
-		
+		$("#rr_info").removeClass('btn-primary').addClass('btn-success');
+	}
+	else if (tab_opt == 'rr_billing') {
+		$("#dma_monthly").removeClass('btn-primary').addClass('btn-success');
+		$("#rr_info").removeClass('btn-primary').addClass('btn-success');
 	}
 	else {
 		$("#dma_monthly").removeClass('btn-primary').addClass('btn-success');
+		$("#rr_billing").removeClass('btn-primary').addClass('btn-success');
 	}
 	$("#"+tab_opt).removeClass('btn-success').addClass('btn-primary');
 
@@ -209,6 +223,56 @@ function plotMonth(){
     //test_json();
 }
 
+function plotRRInfo() {
+	var table = document.getElementById("employee_table");
+	table.innerHTML = '<tr></tr>';
+
+	employee_data = '';
+	
+	agg_data = '';
+	key_data = '';
+	col_opt = '';
+	agg_opt = '';
+	key_opt = '';
+    employee_data +='<tr>';
+    //employee_data +='<th>Name</th>';
+    //employee_data +='<th>Address</th>';
+    employee_data +='</tr>';
+
+	//obj.forEach(process_fill)
+	test_json(obj4);
+	$('#employee_table').append(employee_data)
+
+    //var table = document.getElementById("employee_table");
+    //called function for this
+    record_clicks_for_cells(table);
+
+    //append to 'agg table ' function
+	var aggtable = document.getElementById("agg_table");
+	aggtable.innerHTML = '<tr></tr>';    
+    agg_data = '';
+    //agg_str.forEach(agg_table_fill)
+    agg_table_fill();
+    $('#agg_table').append(agg_data)
+
+    record_clicks_for_cells(aggtable);
+
+	var keytable = document.getElementById("key_table");
+	keytable.innerHTML = '<tr></tr>'; 
+
+    key_table_fill(rr_billing_key);
+    $('#key_table').append(key_data);
+    record_clicks_for_cells(keytable);
+
+
+    //clear both data for next click
+    employee_data = '';
+    agg_data = '';
+    key_data = '';
+
+    //test_json();	
+}
+
 
 function record_clicks_for_cells(table_name){
 
@@ -320,20 +384,38 @@ function agg_table_fill(){
  	var i = 0 ;
  	agg_data += '<tr>';
 
- 	for (i=0;i<agg_str.length;i++){
- 		if(i%2 == 0){
-				agg_data += '</tr>';
-				agg_data += '<tr>';
-				agg_data += '<td id="aggcell">'+agg_str[i]+'</td>'; 
-				console.log("how many times");			
- 		}
- 		else{
- 			agg_data += '<td id="aggcell">'+agg_str[i]+'</td>';
- 			console.log("how --many---times");
+	if (tab_opt == 'rr_info') {
 
- 		}
- 	}
+		for (i=0;i<agg_str_bore.length;i++){
+			if(i%2 == 0){
+					agg_data += '</tr>';
+					agg_data += '<tr>';
+					agg_data += '<td id="aggcell">'+agg_str_bore[i]+'</td>'; 
+					console.log("how many times");			
+			}
+			else{
+				agg_data += '<td id="aggcell">'+agg_str_bore[i]+'</td>';
+				console.log("how --many---times");
 
+			}
+		}
+	
+	}
+	else {
+		for (i=0;i<agg_str.length;i++){
+			if(i%2 == 0){
+					agg_data += '</tr>';
+					agg_data += '<tr>';
+					agg_data += '<td id="aggcell">'+agg_str[i]+'</td>'; 
+					console.log("how many times");			
+			}
+			else{
+				agg_data += '<td id="aggcell">'+agg_str[i]+'</td>';
+				console.log("how --many---times");
+
+			}
+		}
+	}
 	agg_data += '</tr>';	
 }
 
@@ -348,13 +430,49 @@ function submitquery(){
 	if(myChart){
 		lab=[];
 		l = [];
-		createChart();
+		l2 = [];
+		//createChart();
 	}
 	//for the case of date (added later to support rr_billing empty mon_year_opt for all other options, HARDCODED(can be added in other location
 	mon_year_opt = '';
 	
+	//FOR DEBUG
+	/*
+	data = '[{"dma_code":"SE3DMA12","count":[825,424]},{"dma_code":"SE3DMA13","count":[264,0]},{"dma_code":"SW2DMA17","count":[792,467]},{"dma_code":"C1DMA01","count":[3299,240]},{"dma_code":"SW1DMA09","count":[4560,928]},{"dma_code":"SE3DMA10","count":[3353,1982]},{"dma_code":"SW1DMA06","count":[5521,1736]},{"dma_code":"SW1DMA05","count":[1586,427]},{"dma_code":"SE3DMA11","count":[1511,40]},{"dma_code":"S3DMA06","count":[4122,2270]},{"dma_code":"SW1DMA04","count":[1635,650]},{"dma_code":"S3DMA04","count":[639,164]},{"dma_code":"SW1DMA02","count":[2240,498]},{"dma_code":"SW1DMA01","count":[1018,429]},{"dma_code":"S3DMA05","count":[4053,1875]},{"dma_code":"S3DMA02","count":[3300,1787]},{"dma_code":"S3DMA03","count":[2581,1330]},{"dma_code":"S3DMA01","count":[549,355]},{"dma_code":"SW2DMA13","count":[639,279]},{"dma_code":"SW2DMA14","count":[3246,1885]},{"dma_code":"SW2DMA15","count":[4069,1944]},{"dma_code":"SW2DMA16","count":[1390,742]},{"dma_code":"SW2DMA10","count":[8375,1628]},{"dma_code":"SW2DMA11","count":[974,513]},{"dma_code":"SW2DMA12","count":[3459,1008]},{"dma_code":"SE3DMA01","count":[634,154]},{"dma_code":"SW3DMA10","count":[1485,705]},{"dma_code":"SE3DMA02","count":[1462,625]},{"dma_code":"SE3DMA03","count":[2382,905]},{"dma_code":"S2DMA02","count":[1948,1351]},{"dma_code":"SW3DMA13","count":[7266,3067]},{"dma_code":"S2DMA01","count":[673,313]},{"dma_code":"SE3DMA04","count":[1457,443]},{"dma_code":"SE3DMA05","count":[1348,604]},{"dma_code":"SW2DMA06","count":[2527,1022]},{"dma_code":"SW2DMA07","count":[1307,576]},{"dma_code":"SE3DMA06","count":[713,272]},{"dma_code":"S2DMA03","count":[2371,1563]},{"dma_code":"SE3DMA07","count":[2812,1418]},{"dma_code":"SE3DMA08","count":[911,64]},{"dma_code":"S3DMA08","count":[3962,1642]},{"dma_code":"S3DMA09","count":[1700,657]},{"dma_code":"SW2DMA02","count":[2773,1572]},{"dma_code":"SW2DMA03","count":[2687,1871]},{"dma_code":"SW2DMA04","count":[3607,1931]},{"dma_code":"SW2DMA05","count":[1027,600]},{"dma_code":"SW2DMA01","count":[1038,675]},{"dma_code":"SW3DMA02","count":[1540,650]},{"dma_code":"SW3DMA01","count":[900,399]},{"dma_code":"SW3DMA04","count":[1187,493]},{"dma_code":"S1DMA06","count":[2757,496]},{"dma_code":"S1DMA07","count":[1904,781]},{"dma_code":"SW3DMA03","count":[2503,1017]},{"dma_code":"S1DMA08","count":[2043,716]},{"dma_code":"SW3DMA06","count":[2162,942]},{"dma_code":"S1DMA09","count":[2393,514]},{"dma_code":"SW3DMA05","count":[3947,1477]},{"dma_code":"SW4DMA09","count":[973,227]},{"dma_code":"SW4DMA08","count":[907,353]},{"dma_code":"SW4DMA05","count":[1746,488]},{"dma_code":"SW4DMA04","count":[3638,1316]},{"dma_code":"SW4DMA07","count":[1239,278]},{"dma_code":"SW4DMA06","count":[2371,602]},{"dma_code":"SW4DMA01","count":[2351,771]},{"dma_code":"SW4DMA03","count":[2335,907]},{"dma_code":"SW4DMA02","count":[2473,1035]},{"dma_code":"SW3DMA07","count":[1362,645]},{"dma_code":"SW3DMA09","count":[1737,729]},{"dma_code":"W1DMA03","count":[4078,1894]},{"dma_code":"W1DMA02","count":[1806,363]},{"dma_code":"S1DMA10","count":[1415,180]},{"dma_code":"W1DMA01","count":[847,268]},{"dma_code":"SW1DMA13","count":[2027,382]},{"dma_code":"SW1DMA12","count":[2368,643]},{"dma_code":"SW4DMA12","count":[1834,380]},{"dma_code":"SW1DMA10","count":[4313,1656]},{"dma_code":"SW4DMA11","count":[3274,772]},{"dma_code":"SW4DMA13","count":[228,72]},{"dma_code":"S1DMA02","count":[1406,757]},{"dma_code":"S1DMA03","count":[3816,1322]},{"dma_code":"SW4DMA10","count":[1171,359]},{"dma_code":"S1DMA04","count":[1313,609]},{"dma_code":"S1DMA05","count":[257,146]},{"dma_code":"S1DMA01","count":[603,409]}]'
+	data = JSON.parse(data);
+	console.log(data)
+	l=[];
+	lab=[];
+	l2=[];
+	for (var i = 0; i < data.length; i++) {
+		console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+		//for only 1 bar
+		if (data[i].dma_code == "dma_code"){
+			lab.push("Table: "+tab_opt);
+		}
+		//multiple bars
+		else {
+			lab.push(data[i].dma_code);
+		}
+		l.push(data[i].count[0]);
+		l2.push(data[i].count[1]);
+	
+	}
+	console.log(l)
+	console.log(l2)
+
+	plotStackedGraph();
+			document.getElementById('graph').style.display = "block";
+			document.getElementById('dwn').style.display = "block";
+			document.getElementById('zoomop').style.display = "block";	
+	*/		
+	
+	//FOR PRODUCTION
+	
+	
+	
 	//-------------case for box plot--------------
-	if (key_opt != '' && tab_opt!='' && col_opt !='' && agg_opt =='') {
+	if (key_opt != '' && tab_opt!='' && col_opt !='' && agg_opt =='' && tab_opt!='rr_info') {
 		$("#subQ").removeClass('btn-danger').addClass('btn-primary');
 		$("#subQmsg").removeClass('alert-danger').addClass('alert-success');
 		$("#subQmsg").html("<strong>Success</strong> : Query submitted")
@@ -363,7 +481,7 @@ function submitquery(){
 	}
 	
 	//----------gen case 
-	if (tab_opt == '' || col_opt == '' || (agg_opt == '' && key_opt == '') ) {
+	if (tab_opt == '' || col_opt == '' || (agg_opt == '' && key_opt == '') || (agg_opt == '' && tab_opt == 'rr_info') ) {
 		console.log('error case '+tab_opt+' '+col_opt+' '+key_opt);
 		$("#subQ").removeClass('btn-primary').addClass('btn-danger');
 		//$("#subQ").addClass('btn-danger');
@@ -434,24 +552,30 @@ function submitquery(){
 			console.log(request.responseText)
 			data = JSON.parse(this.response);
 			console.log(data)
-			l=[];
-			lab = [];
-			for (var i = 0; i < data.length; i++) {
-				console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
-				//for only 1 bar
-				if (data[i].dma_code == "dma_code"){
-					lab.push("Table: "+tab_opt);
-				}
-				//multiple bars
-				else {
-					lab.push(data[i].dma_code);
-				}
-				l.push(data[i].count);
-				
-			}
+
+			
 			console.log(data);
+			
+			if (tab_opt != 'rr_info') {
+				for (var i = 0; i < data.length; i++) {
+					console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+					//for only 1 bar
+					if (data[i].dma_code == "dma_code"){
+						lab.push("Table: "+tab_opt);
+					}
+					//multiple bars
+					else {
+						lab.push(data[i].dma_code);
+					}
+					l.push(data[i].count);
+					
+				}
+			}			
+			
+			
 			console.log('again try');
 			console.log(l);
+			console.log(l2);
 			
 			//myChart.update();
 			document.getElementById('graph').style.display = "block";
@@ -462,6 +586,11 @@ function submitquery(){
 			if (agg_opt == '') {
 				plotBox();
 				document.getElementById('violinBox').style.display = "block";
+			}
+			else if (tab_opt == 'rr_info') {
+				plotStackedGraph();
+				document.getElementById('violinBox').style.display = "none";
+				//document.getElementById('dwnStd').style.display = "block";
 			}
 			else {
 				createChart();
@@ -491,6 +620,8 @@ function submitquery(){
 		//**************************************
 		
 	} //  end of else
+	
+
 }
 
 
@@ -667,6 +798,10 @@ function srtAsc(a, b){
     return a.count - b.count;
 }
 
+function srtAscStacked(a, b){
+    return a.count[0] - b.count[0];
+}
+
 function srtDesc(a, b){
     return b.count - a.count;
 }
@@ -683,14 +818,19 @@ function srtXaxisAsc(a, b){
 var toggleSort = 1;
 
 function sortFn(){
-	if (data[i].dma_code == "dma_code") {
+	if (data[0].dma_code == "dma_code") {
 		console.log("can't sort 1 element");
 		return;
 	}
 	//not a box/violin plot
 	if (toggleSort == 1 && agg_opt != '') {
 		toggleSort = 0;
-		data.sort(srtAsc);
+		if (tab_opt == 'rr_info') {
+			data.sort(srtAscStacked);
+		}
+		else {
+			data.sort(srtAsc);
+		}
 	}
 	//violin and boxplot has only this sort
 	else {
@@ -707,6 +847,9 @@ function sortFn(){
 	
 	if (agg_opt == '') {
 		plotBox();
+	}
+	else if (tab_opt == 'rr_info') {
+		plotStackedGraph();
 	}
 	else {
 		createChart();
@@ -810,6 +953,105 @@ boxplotData = {
 	
   });	
   //myChart.options.zoom.enabled = false;
+}
+
+function plotStackedGraph() {
+	l=[];
+	lab = [];
+	// l2 is for number of borewell in the stack chart
+	l2=[];
+
+    // if it is rr_information
+	for (var i = 0; i < data.length; i++) {
+		console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+		//for only 1 bar
+		if (data[i].dma_code == "dma_code"){
+			lab.push("Table: "+tab_opt);
+		}
+		//multiple bars
+		else {
+			lab.push(data[i].dma_code);
+		}
+		l.push(data[i].count[0]);
+		l2.push(data[i].count[1]);
+		
+	}				
+	
+	var dispData = {
+		labels: lab,
+		datasets: [
+			{
+				label: "Number of RR Units",
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',   
+				borderWidth: 1,
+				data: l,
+			}  ,
+					{
+				label: "Borewell",
+				backgroundColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+				data: l2,
+			}
+
+		]
+	};
+
+	var options= {
+		title : {
+			display: true,
+			text: agg_opt+'('+clickedId+') for each '+key_opt
+		},
+		pan: {
+					enabled: true,
+					mode: 'xy',
+					speed: 2,
+					threshold: 2
+		},
+		zoom: {
+					enabled: true,
+					mode: 'y',
+					limits: {
+						max: 10,
+						min: 0.5
+					}
+		},		
+		scales: {
+		  xAxes: [{
+		    stacked: true,
+			scaleLabel: {
+				display:true,
+				labelString: key_opt
+			}
+		  }],
+		  yAxes: [{
+			stacked: false,
+			ticks: {
+			  beginAtZero: true
+			},
+			scaleLabel: {
+				display:true,
+				labelString: agg_opt+'('+clickedId+')'
+			}			
+		  }]
+
+		}
+	};
+
+	var ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	if(myChart){
+		myChart.destroy();
+	}
+	
+	
+	myChart = new Chart(ctx, {
+		type: 'bar',
+		data: dispData,
+		options: options
+	});	
+	
+	myChart.options.zoom.enabled = false;
+	
 }
 
 

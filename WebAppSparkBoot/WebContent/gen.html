@@ -78,16 +78,13 @@
       <h3>Please select a table</h3>
       <p>Once selected, the <strong>columns</strong> and <strong>aggregate functions</strong> that can be valid on selected dataset will be displayed for further selection</p>
       <div class="row">
-        <div class="col-md-3 text-center">
-          <button class="btn" type="button">Flow & pressure data</button>
-        </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-4 text-center">
           <button id="dma_monthly" class="btn btn-success" type="button" onclick="track_click_element(this.id);plotMonth();">DMA monthly data</button>
         </div>
-        <div class="col-md-3 text-center">
-          <button class="btn" type="button">RR information</button>
+        <div class="col-md-4 text-center">
+          <button id="rr_info" class="btn btn-success" type="button" onclick="track_click_element(this.id);plotRRInfo();">RR information</button>
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-4 text-center">
           <button id = "rr_billing" class="btn btn-success" type="button" onclick="track_click_element(this.id);plotGraph();">RR Billing</button>
         </div>
       </div>
@@ -98,7 +95,7 @@
       <div class="container div_table">
         <div class="row">
           <div class="col-md-8">
-            <p>please select 1 attribute</p>
+            <p>please select 1 attribute<br><br></p>
             <h4>Target Attributes</h4>
             <table class="table table-bordered table-striped table-hover" id="employee_table">        
               <tr></tr>
