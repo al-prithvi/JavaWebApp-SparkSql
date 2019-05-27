@@ -14,6 +14,7 @@ var tab_opt = '';
 var col_opt = '';
 // MAP , also dm_no is going to be used when calling pop up code
 var dm_no = ''
+var dma_code = ''
 
 //from and to date in flow_meter readings
 var fromdt = '', todt = '';
@@ -68,6 +69,7 @@ var obj_dma_options = JSON.parse('\
    });
 
    //code for after MAP is clicked 
+   /*
    dm_no = window.localStorage.getItem("dm_no");
    console.log("dm is ", dm_no)
    //********************11th march 2019 DISABLED, if no dm_no is selected, it goes from previous selection **********
@@ -90,8 +92,25 @@ var obj_dma_options = JSON.parse('\
 	   var h = document.getElementById('dm_no_display');
 	   h.innerHTML += ' of DM_NO: <br>'+dm_no;
 	   
-   }
+   }//as if we had clicked flow_pressure
+   
+   debug ---
+   */ 
+   /*
+   dma_code = window.localStorage.getItem("dma_code");
+   console.log("dma code ", dma_code)
+   window.localStorage.setItem("dma_code", "");
+   
+   if (dma_code != "") {
+		track_click_element('conn_type');
+		var h = document.getElementById('dma_no_display');
+		h.innerHTML += ' '+dma_code;
+   }// as if we clicked conn_type
+   
+   
+   */
    console.log("dm is ", dm_no)
+   //console.log("dma code is ", dma_code)
 
 });
 
@@ -119,6 +138,14 @@ function submitquery(){
 	document.getElementById('dwn').style.display = "block";	
 	*/
 	
+	//for bar chart debug
+	/*
+	data = '[{"dma_code":"Partial Non Domestic","count":4},{"dma_code":"Domestic Apartments","count":1},{"dma_code":"ND-NonStar Hotels","count":2},{"dma_code":"Multi-House","count":201},{"dma_code":"Domestic HR","count":5},{"dma_code":"Community halls\/ Kalyana Manta","count":2},{"dma_code":"Domestic","count":1362},{"dma_code":"Bar and restaurant, lodge less","count":3},{"dma_code":"Partial ND","count":69},{"dma_code":"Darshini hotels, cafeteria and","count":2},{"dma_code":"PND-Darshini hotels, cafeteria","count":1},{"dma_code":"Non Domestic","count":154}]'
+	data = JSON.parse(data);
+	createBarChart()
+	document.getElementById('graph').style.display = "block";
+	document.getElementById('dwn').style.display = "block";	
+	*/
 	
 	//for debug here
 	
@@ -126,9 +153,12 @@ function submitquery(){
 	document.getElementById('dwn').style.display = "none";	
 	
 	
-	console.log("dma is ----",dm_no)
+	console.log("dm no  is ----",dm_no)
+	console.log("dma code is ----",dma_code)
+	
 	//dm_no = "some" 
 	//date extract code
+	
 	if (tab_opt == 'flow_pressure') {
 		date = new Date($('#from_date').val());
 		day = date.getDate();
@@ -188,7 +218,7 @@ function submitquery(){
 			return 
 		}
 		
-	}
+	} // end of FLOW PRESSURE *****************
 
 	//-------------------------------temporary --------------------------
 	//following choice for lorenz 
@@ -214,6 +244,14 @@ function submitquery(){
 		$("#subQmsg").removeClass('alert-success').addClass('alert-danger');
 		$("#subQmsg").html("<strong>Error</strong> : Please make the from and till date for flow meter readings")			
 	}	
+	// conditions for connection type 
+	else if (tab_opt == 'conn_type' && dma_code == "") {
+		$("#subQ").removeClass('btn-primary').addClass('btn-danger');
+		//$("#subQ").addClass('btn-danger');
+		$("#subQmsg").removeClass('alert-success').addClass('alert-danger');
+		$("#subQmsg").html("<strong>Error</strong> : Please make a DMA selection from MAP tab")
+	}
+	
 	else {
 		$("#subQ").removeClass('btn-danger').addClass('btn-primary');
 		$("#subQmsg").removeClass('alert-danger').addClass('alert-success');
@@ -225,6 +263,13 @@ function submitquery(){
 		// MAP
 		//val = col_opt which is the month year selected
 		//label = table selected
+		
+		
+		//rest api : x_opt is tab_opt HARDCODED (SEE IF IT WORKS)
+		x_opt = tab_opt;
+		if (tab_opt == 'conn_type') {
+			dm_no = dma_code;
+		}
 		
 		var requestUrl = 'spark?val='+col_opt+'&label='+x_opt+'&dm_no='+dm_no+'&fdate='+fromdt+'&tdate='+todt;
 		request.open('GET', requestUrl, true);
@@ -288,13 +333,17 @@ function submitquery(){
 				window.localStorage.setItem("gini", data[i].y.toPrecision(3)  );
 				window.localStorage.setItem("theil", data[i+1].y.toPrecision(3)  );
 			}
-			else {
+			else if (tab_opt == 'flow_pressure') {
 				//for flow meter readings
 				console.log("inside plotline")
 				console.log(data)
 				plotLine(data);
 			}
 			
+			else if (tab_opt == 'conn_type') {
+				createBarChart();
+				document.getElementById('dwn').style.display = "none";
+			}
 
 			window.location.hash = '#myChart';
 			removeHash();
@@ -306,7 +355,7 @@ function submitquery(){
 		console.log(lab);
 
 
-	}//end of else block
+	}//end of else block (where api request is made)
 	
 	
 }
@@ -566,7 +615,79 @@ LTS  : 'h:mm:ss A',
 	//myChart.options.zoom.enabled = true;
 }
 
-
+//bar chart
+function createBarChart(){
+	//**** chart code (bar)
+	l = []
+	lab = []
+	for (var i = 0; i < data.length; i++) {
+		console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+		lab.push(data[i].dma_code);
+		l.push(data[i].count);
+		
+	}	
+	
+	
+	
+	var ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	if(myChart){
+		myChart.destroy();
+	}
+	
+	myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	        labels: lab,
+	        datasets: [{
+	            label: 'Number of connections',
+	            data: l,
+	            backgroundColor: "rgba(14,72,100,1)",
+				strokeColor: "brown",
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+			title : {
+				display: true,
+				text: 'connection types for DMA '+dma_code
+			},
+			pan: {
+						enabled: true,
+						mode: 'xy',
+						speed: 2,
+						threshold: 2
+			},
+			zoom: {
+						enabled: true,
+						mode: 'y',
+						limits: {
+							max: 10,
+							min: 0.5
+						}
+			},
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                },
+	                scaleLabel: {
+	                	display:true,
+	                	labelString: 'Number of RR\'s '
+	                }
+	            }],
+				xAxes: [{
+					scaleLabel: {
+						display:true,
+						labelString: 'connection types for DMA '+dma_code
+					}
+				}
+				]
+	        }
+	    }
+	});
+	myChart.options.zoom.enabled = true;
+}
 
 
 function track_click_element(clicked_id){
@@ -591,10 +712,11 @@ function track_click_element(clicked_id){
 	//change color of clicked button (table)
 	if (tab_opt == 'lorenz'){
 		$("#flow_pressure").removeClass('btn-primary').addClass('btn-success');	
-		$("#dma_info").removeClass('btn-primary').addClass('btn-success');
+		$("#conn_type").removeClass('btn-primary').addClass('btn-success');
 		document.getElementById('table_attrib').style.display = "block";
 		//the other table's option has to go
 		document.getElementById('flowmeter_dates').style.display = "none";
+		document.getElementById('conn_msg').style.display = "none";
 		/*
 		if(myChart){
 			lab=[];
@@ -605,18 +727,58 @@ function track_click_element(clicked_id){
 	}
 	else if (tab_opt == 'flow_pressure') {
 		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
-		$("#dma_info").removeClass('btn-primary').addClass('btn-success');
+		$("#conn_type").removeClass('btn-primary').addClass('btn-success');
 		document.getElementById('flowmeter_dates').style.display = "block";
 		// the other table has got to go
 		document.getElementById('table_attrib').style.display = "none";
+		document.getElementById('conn_msg').style.display = "none";
+		
+	   //code for after MAP is clicked 
+	   dm_no = window.localStorage.getItem("dm_no");
+	   console.log("dm is ", dm_no)
+	   //********************11th march 2019 DISABLED, if no dm_no is selected, it goes from previous selection **********
+	   //enabled
+	   window.localStorage.setItem("dm_no", "");
+	   //for debug 
+	   //dm_no = 'SW2DM0204'
+	   //test whether dm_no is "", if yes, then it doesn't come from maps section with dm_no
+	   if (dm_no != "") {
+   
+		   //track_click_element('flow_pressure');
+		   
+		   //display dm_no
+		   var h = document.getElementById('dm_no_display');
+		   h.innerHTML = 'From and To date for flow-rate chart '
+		   h.innerHTML += ' of DM_NO: <br>'+dm_no;
+		   
+	   }//as if we had clicked flow_pressure			
 	}	
 	
-	else { // for dma_info
+	else { // for conn_type
 		$("#lorenz").removeClass('btn-primary').addClass('btn-success');
 		$("#flow_pressure").removeClass('btn-primary').addClass('btn-success');
-		document.getElementById('table_attrib').style.display = "block";
+		document.getElementById('conn_msg').style.display = "block";
 		//the other table's option has to go
-		document.getElementById('flowmeter_dates').style.display = "none";		
+		document.getElementById('flowmeter_dates').style.display = "none";
+		document.getElementById('table_attrib').style.display = "none";	
+		
+		
+	   dma_code = window.localStorage.getItem("dma_code");
+	   console.log("dma code ", dma_code)
+	   window.localStorage.setItem("dma_code", "");
+	   
+	   if (dma_code != "") {
+			//track_click_element('conn_type');
+			var h = document.getElementById('dma_no_display');
+			h.innerHTML = 'Connection types of DMA: ';
+			h.innerHTML += ' '+dma_code;
+	   }// as if we clicked conn_type
+	   
+
+	   console.log("dma code is ", dma_code)		
+		
+		
+		
 	}
 	
 	$("#"+tab_opt).removeClass('btn-success').addClass('btn-primary');

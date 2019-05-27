@@ -528,6 +528,42 @@ public class MyServletDemo extends HttpServlet {
     		  
     		  
     	  }
+
+    	  else if (val!=null && label.equals("conn_type")) {
+    		  // for flow meter line chart 
+    		  //***********************************************************************CHANGE*****DATE IS HARDCODED**************************************
+    		  //dm_no = "SW3DM0601";
+    		  System.out.println("dm_no is "+dm_no);
+    		  //*************************************************************HARD CODED*****************REMOVE AFTER DATA CHECK*************************************
+    		  //HARDCODED NOT NULL
+    		  sql = "select connection_type, count(*) from rr2_information where dma_code = '"+ dm_no +"' and connection_type is not NULL group by connection_type"; //flowAndPressure LOCAL DEBUG
+    		  System.out.println(sql);
+    		  pstmt = conn.createStatement();
+    		  ResultSet rs = pstmt.executeQuery(sql);
+    		  String f1;
+    		  Integer f2;
+    		  while(rs.next()) {
+    			  JSONObject obj = new JSONObject();
+    			  f1 = rs.getString(1); // for connection_type 
+    			  f2 = rs.getInt(2); // for count
+    			  
+    			  System.out.println(f1+" "+f2);
+    			  
+    			  
+    			  // dma_code : date and count: pressure
+	    		  obj.put("dma_code", f1); //check, preferable to change
+	        	  obj.put("count", f2);
+	        	  
+	        	  
+	        	  System.out.println(obj.toString());
+	        	  list.add(obj);    			  
+    		  }
+			  System.out.println(list.toString());
+	    	  out.println(list.toString());    		  
+    		  
+    		  
+    	  }  	  
+    	  
     	  
     	  else { // IF GENERAL QUERY (14) 
     		  System.out.println(label=="flow_pressure");

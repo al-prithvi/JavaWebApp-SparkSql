@@ -39,7 +39,7 @@
   </head>
 
   <body>
-    <script src="main-spec.js?1500"></script>
+    <script src="main-spec.js?1511"></script>
     <div class="container">
 
       <div class="page-header">
@@ -74,17 +74,22 @@
       <p>Please make selections for x and y axis attributes for the graph query</p>
       -->
       <div class="row">
-        <div class="col-md-6 text-center">
+        <div class="col-md-4 text-center">
           
           <button class="btn btn-success" type="button" id="lorenz" onclick="plotLorenz();track_click_element(this.id);">
             Lorenz Curve
           </button>
         </div>
-        <div class="col-md-6 text-center">
+        <div class="col-md-4 text-center">
           <button class="btn btn-success" type="button" id="flow_pressure" onclick="track_click_element(this.id);">
 		   Flow/Pressure
 		  </button>
         </div>
+        <div class="col-md-4 text-center">
+          <button class="btn btn-success" type="button" id="conn_type" onclick="track_click_element(this.id);">
+		   Connection Types
+		  </button>
+        </div>		
         <!-- div class="col-md-4 text-center">
           <button class="btn btn-success" type="button" id="dma_info" onclick="dma_options();track_click_element(this.id);">
 		   DMA-Info
@@ -121,6 +126,15 @@
 		  
 		</div>
 	  </div>
+	  
+      <div class="container div_table" id="conn_msg">
+        <div class="row">
+          <div class="col-md-12">
+            <p>please select DMA from map.html</p>
+            <h4 id='dma_no_display'>Connection types of DMA: </h4> 
+          </div>	  
+		</div>
+	   </div>	  
 
       <!-- div class="container div_table" id="dma_names">
         <div class="row">

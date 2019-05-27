@@ -555,6 +555,24 @@ function submitquery(){
 
 			
 			console.log(data);
+			
+			if (tab_opt != 'rr_info') {
+				for (var i = 0; i < data.length; i++) {
+					console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+					//for only 1 bar
+					if (data[i].dma_code == "dma_code"){
+						lab.push("Table: "+tab_opt);
+					}
+					//multiple bars
+					else {
+						lab.push(data[i].dma_code);
+					}
+					l.push(data[i].count);
+					
+				}
+			}			
+			
+			
 			console.log('again try');
 			console.log(l);
 			console.log(l2);
@@ -942,37 +960,22 @@ function plotStackedGraph() {
 	lab = [];
 	// l2 is for number of borewell in the stack chart
 	l2=[];
-	if (tab_opt != 'rr_info') {
-		for (var i = 0; i < data.length; i++) {
-			console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
-			//for only 1 bar
-			if (data[i].dma_code == "dma_code"){
-				lab.push("Table: "+tab_opt);
-			}
-			//multiple bars
-			else {
-				lab.push(data[i].dma_code);
-			}
-			l.push(data[i].count);
-			
+
+    // if it is rr_information
+	for (var i = 0; i < data.length; i++) {
+		console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
+		//for only 1 bar
+		if (data[i].dma_code == "dma_code"){
+			lab.push("Table: "+tab_opt);
 		}
-	}
-	else {   // if it is rr_information
-		for (var i = 0; i < data.length; i++) {
-			console.log(data[i].dma_code + ' is a ' + data[i].count + '.'); //-------
-			//for only 1 bar
-			if (data[i].dma_code == "dma_code"){
-				lab.push("Table: "+tab_opt);
-			}
-			//multiple bars
-			else {
-				lab.push(data[i].dma_code);
-			}
-			l.push(data[i].count[0]);
-			l2.push(data[i].count[1]);
-			
-		}				
-	}	
+		//multiple bars
+		else {
+			lab.push(data[i].dma_code);
+		}
+		l.push(data[i].count[0]);
+		l2.push(data[i].count[1]);
+		
+	}				
 	
 	var dispData = {
 		labels: lab,
