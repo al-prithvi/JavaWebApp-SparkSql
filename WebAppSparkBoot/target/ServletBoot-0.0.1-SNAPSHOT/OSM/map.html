@@ -41,16 +41,43 @@
 		var dma_analyze = false; //whether to go to use case page
 		var pushedMeters = ['Ashok Nagar SW3DM0604', 'Ashok Nagar SW3DM0601', 'Ashok Nagar SW3DM0602.', 'Ashok Nagar SW3DM0603', 'Azad Nagar SW1DM1201', 'Azad Nagar SW1DM1202', 'Azad Nagar SW1DM1203', 'Banagiri Nagar SW2DM0703', 'Banagiri Nagar SW2DM0701', 'Banagiri Nagar SW2DM0702', 'Banashankari2nd stage SW2DM1001', 'Banashankari2nd stage SW2DM1002', 'Banashankari2nd stage SW2DM1003', 'Banashankari2nd stage SW2DM1004', 'Banashankari2nd stage SW2DM1006', 'Banashankari2nd stage SW2DM1005', 'Banashankari2nd stage SW2DM1007', 'Banashankari2nd stage SW2DM1008', 'Basavanagudi SW3DM1001', 'Basavanagudi SW3DM1003', 'Bandre nagar S1DM0402', 'Bendre Nagar S1DM0401', 'Bendre Nagar S1DM0403', 'BHCS Layout S1DM0701', 'BHCS Layout  S1DM0702 ', 'BHCS Layout  S1DM0703', 'Bhuvaneshwari Nagar SW2DM1601', 'Byrasandra SW4DM0602', 'Byrasandra SW4DM0601', 'Byrasandra SW4DM0603', 'Byrasandra SW4SM0602', 'Byrasandra SW4SM0601', 'CARP Quarters SE3DM0101', 'Chalavadipalya&Chikkal C1DM0101', 'Chalavadipalya&Chikkal C1DM0102', 'Chalavadipalya&Chikkal C1DM0103', 'Chalavadipalya&Chikkal C1DM0107', 'Channammanakere SW2DM0602', 'Channammanakere SW2DM0603', 'Channammanakere SW2DM0601', 'Channammanakere SW2DM0604', 'Chikkalasandra S1DM0201', 'JP Nagar V Phase S2DM0201', 'JP Nagar V Phase S2DM0202', 'JP Nagar V Phase S2DM0203', 'KRMarketChamarajpeteSW1DM0602  ', 'KRMarketChamarajpeteSW1DM0603', 'KRMarketChamarajpeteSW1SM0607', 'KRMarketChamarajpeteSW1SM0606', 'Kalidasa Layout SW3DM0101', 'Kamkya Layout SW2DM1701', 'Kathriguppe SW2DM0401', 'Kathriguppe SW2DM0404', 'Kathriguppe SW2DM0402', 'Kathriguppe SW2DM0403', 'KG Nagara SW1DM0102', 'KG Nagara SW1DM0103', 'KHB Colony SE3DM0401', 'Koramangala 1st Block SE3DM1201', 'Koramangala 1st Block SE3DM1202', 'Koramangala 3rd & 4th SE3DM0301', 'Koramangala 3rd & 4th SE3DM0302', 'Koramangala 3rd & 4th SE3DM0304', 'Koramangala6thBlk SE3DM0501', 'Koramangala6thBlk SE3DM0502', 'Kormangala 7th & 8th SE3DM1101', 'Kormangala 7th & 8th SE3DM0201', 'Kormangala 7th & 8th SE3DM0202', 'KSRP Quarters SE3DM1301', 'Kumarswamy Layout 1st S1DM0901', 'Kumarswamy Layout 1st S1DM0902', 'Kumarswamy Layout 2nd S1DM0601', 'Kuvempu Nagar S3DM0301', 'Kuvempu Nagar S3DM0302', 'Kuvempu Nagar S3DM0303', 'Madiwala S3DM0101', 'Madiwala S3DM0102', 'Maruthi Nagar S3DM0901', 'Mavalli SW1DM0501', 'Mavalli SW1DM0502', 'Mico Layout S3DM0401', 'Muneshwara Block SW3DM0704', 'Muneshwara Block SW3DM0702', 'Muneshwara Block SW3DM0701', 'Nagendra Block SW3DM0401', 'Nagendra Block SW3DM0402', 'New Timber Yard  W1DMA0202', 'New Timber Yard  W1DMA0201', 'New Timber Yard  W1DMA0203', 'New Timber Yard  W1DMA0204', 'Newguddadahalli W1DM0102', 'Newguddadahalli W1DM0103', 'Newguddadahalli W1DM0101', 'Old Guddadahalli SW1DM1001', 'Old Guddadahalli SW1DM1002', 'Padmanabhanaga S1DM0301', 'Padmanabhanagar S1DM0302 ', 'Pragathipura S1DM1001', 'Pragathipura S1DM1002', 'Shakambari Nagar SW4DM0801', 'Shakambari Nagar SW4DM0802', 'Shakambari Nagar SW4SM0801', 'Shastri Nagar SW2DM1101', 'Shastri Nagar SW2DM1102', 'Shastri Nagar SW2DM1103', 'Siddhartha Colony SE3DM0802', 'Siddhartha Colony SE3DM0801', 'Siddhartha Colony SE3BM0801', 'Siddhartha Colony SE3BM0802', 'Siddhartha Colony SE3BM0803', 'Srinagar SW3DM0301', 'Srinagar SW3DM0302', 'Srinagar SW3DM0303', 'Srinivasa Nagar SW2DM0302.', 'Srinivasa Nagar SW2DM0301', 'Srinivasa Nagar SW2DM0303', 'STB SE3DM0601', 'STB SE3DM0602', 'Suddagunte Palya S3DM0804 ', 'Suddagunte Palya S3DM0803', 'Suddagunte Palya S3DM0802', 'Suddagunte Palya S3DM0801', 'Suddagunte Palya S3DM0805', 'Thyagaraja Nagar SW3DM1301', 'Thyagaraja Nagar SW3DM1302', 'Thyagaraja Nagar SW3DM1303', 'Thyagaraja Nagar SW3DM1304', 'Thyagaraja Nagar SW3DM1306', 'V V Puram SW1DM0403', 'V V Puram SW1DM0405', 'Venkateshwar Layout S3DM0501', 'Venkateshwar Layout S3DM0502', 'Venkateshwar Layout S3DM0503', 'Vidya Nagar SW2DM0102', 'Vidya Nagar SW2DM0101', 'Vivekananda Nagar SW2DM0501', 'Venkateshwar Layout S3SM0501']
 
-		function togglebool() {
-			mtr_analyze = mtr_analyze ? false:true;	
-			console.log(mtr_analyze," value is ");
+		function togglebool(iD) {
+			console.log('id of meter is '+iD)
+			
+			//parent checkboxes
+			if (iD == 'cb_3') { // dma_d2b
+				dma_analyze = false;
+				document.getElementById("analysis_dma").checked = false;
+			}
+			else if (iD == 'cb_7') { // meter
+				mtr_analyze = false;
+				document.getElementById("analysis_mtr").checked = false;
+			}
+			
+			
+			if (iD == 'analysis_mtr') {
+				mtr_analyze = mtr_analyze ? false:true;	
+				console.log(mtr_analyze," value is ");
+				
+				//uncheck the others
+				if ( document.getElementById("cb_3").checked == true  ) {
+					document.getElementById("analysis_dma").checked = false;
+					dma_analyze = false;
+				}
+			}
+			else if (iD == 'analysis_dma') {
+				dma_analyze = dma_analyze ? false:true;
+				console.log(dma_analyze," value is ");
+				
+				//uncheck the others
+				if ( document.getElementById("cb_7").checked == true  ) {
+					document.getElementById("analysis_mtr").checked = false;
+					mtr_analyze = false;
+				}
+			}
+			
 		}
 		
-		// control dma analysis variable 
-		function toggleboolDma() {
-			dma_analyze = dma_analyze ? false:true;
-			console.log(dma_analyze," value is ");
-		}
 		
 		function uncheck_main(name)
 		{
@@ -427,25 +454,20 @@
 				console.log("dma_code : ",arr[0]);
 				var c = window.localStorage.getItem("dma_code")
 				console.log("received: ",c)						
-				
+				alert("Please go to 'Use Cases' tab and click on Connection Types for info on DMA: "+arr[0]);
 				return
 				
 			}
 			
-			var arr = s.match(/[A-Z]+[0-9](DM|BM|SM)[0-9]{4}/gm); // considers DM,BM,SM
-			if (!arr) {
-				console.log("not DM");
-				return;
-			}
-			//store it
-			window.localStorage.setItem("dm_no", arr[0]);			
-			console.log("dm_no : ",arr[0]);
-			var c = window.localStorage.getItem("dm_no")
-			console.log("received: ",c)			
-			
+				
 			// if checkbox is ticked to go analysis
 			if (mtr_analyze) {
-
+				var arr = s.match(/[A-Z]+[0-9](DM|BM|SM)[0-9]{4}/gm); // considers DM,BM,SM
+				if (!arr) {
+					console.log("not DM");
+					return;
+				}
+				
 				var found = false;
 				for (i=0;i<pushedMeters.length;i++) {
 					if (pushedMeters[i].includes(arr[0])){
@@ -453,16 +475,24 @@
 						found = true;
 					}
 				}
+				
 				if (!found) {
-					alert("No readings found for dm_no : ", arr[0]);
+					alert("No readings found for dm_no : " + arr[0]);
 					return;
 				}
 				else {
-					window.location.href = "../spec.html";
+					//window.location.href = "../spec.html";
+					//store it
+					window.localStorage.setItem("dm_no", arr[0]);			
+					console.log("dm_no : ",arr[0]);
+					var c = window.localStorage.getItem("dm_no")
+					console.log("received: ",c)		
+					alert("Please go to 'Use Cases' tab and click on Flow/Pressure for info on DM: "+arr[0])
 				}
 				
 				
-			}
+			}// end of mtr_analyze
+			
 			else {
 				console.log("your choice");
 			}
@@ -511,22 +541,22 @@
 							</li-->
 							<br><br>
 							<li>
-								<input id="cb_7" type="checkbox" name="water_layer" value="borewell" onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul1" >
+								<input id="cb_7" type="checkbox" name="water_layer" value="borewell" onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul1" >
 									<label>	Meter	</label>
 								</input><div class="custom_legend"><img class="custom_legend" src="png/borewell_icon.png" /></div> 
 								<ul id="collapsible-ul1" class="collapse" aria-expanded="false">
 									<li>
-										<input id="analysis_mtr" type="checkbox" name="" value=""  onclick="togglebool()"><b><label>Select to go to analysis</label></b></input>
+										<input id="analysis_mtr" type="checkbox" name="" value=""  onclick="togglebool(this.id)"><b><label>Select to go to analysis</label></b></input>
 									</li>
 								</ul> <!-- end of dropdown list -->
 							</li>
 							<li>
-								<input id="cb_3" type="checkbox" name="water_layer" value="d2b" 	 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
+								<input id="cb_3" type="checkbox" name="water_layer" value="d2b" 	 	onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
 									<label>DMA D2B</label>
 								</input><div class="custom_legend" style="background-color:#00ccff;"></div> 	
 								<ul id="collapsible-ul2" class="collapse" aria-expanded="false">
 									<li>
-										<input id="analysis_dma" type="checkbox" name="" value=""  onclick="toggleboolDma()"><b><label>Select to go to analysis</label></b></input>
+										<input id="analysis_dma" type="checkbox" name="" value=""  onclick="togglebool(this.id)"><b><label>Select to go to analysis</label></b></input>
 									</li>
 								</ul> <!-- end of dropdown list -->						
 							</li>

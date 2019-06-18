@@ -167,6 +167,11 @@ function submitquery(){
         	day = '0'+day 
 		
 		month = date.getMonth() + 1;
+		month = month.toString()
+		if (month.length == 1)
+			month = '0' + month
+        
+        
 		year = date.getFullYear();
 		fromdt = ([year, month, day].join('-'))
 		var fdate = date;
@@ -179,6 +184,10 @@ function submitquery(){
         	day = '0'+day 
 		
 		month = date.getMonth() + 1;
+		month = month.toString()
+		if (month.length == 1)
+			month = '0' + month
+			
 		year = date.getFullYear();
 		todt = ([year, month, day].join('-'))
 		var tdate = date;

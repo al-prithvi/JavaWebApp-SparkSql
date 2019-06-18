@@ -742,16 +742,18 @@ function track_click_element(clicked_id){
 	   //for debug 
 	   //dm_no = 'SW2DM0204'
 	   //test whether dm_no is "", if yes, then it doesn't come from maps section with dm_no
-	   if (dm_no != "") {
+
+	   var h = document.getElementById('dm_no_display');
+	   h.innerHTML = 'From and To date for flow-rate chart '
+	   h.innerHTML += ' of DM_NO: <br>'+dm_no;
+	   //if (dm_no != "") {
    
 		   //track_click_element('flow_pressure');
 		   
 		   //display dm_no
-		   var h = document.getElementById('dm_no_display');
-		   h.innerHTML = 'From and To date for flow-rate chart '
-		   h.innerHTML += ' of DM_NO: <br>'+dm_no;
+
 		   
-	   }//as if we had clicked flow_pressure			
+	   //}//as if we had clicked flow_pressure			
 	}	
 	
 	else { // for conn_type
@@ -767,12 +769,14 @@ function track_click_element(clicked_id){
 	   console.log("dma code ", dma_code)
 	   window.localStorage.setItem("dma_code", "");
 	   
-	   if (dma_code != "") {
+
+		var h = document.getElementById('dma_no_display');
+		h.innerHTML = 'Connection types of DMA: ';
+		h.innerHTML += ' '+dma_code;
+	   //if (dma_code != "") {
 			//track_click_element('conn_type');
-			var h = document.getElementById('dma_no_display');
-			h.innerHTML = 'Connection types of DMA: ';
-			h.innerHTML += ' '+dma_code;
-	   }// as if we clicked conn_type
+
+	   //}// as if we clicked conn_type
 	   
 
 	   console.log("dma code is ", dma_code)		

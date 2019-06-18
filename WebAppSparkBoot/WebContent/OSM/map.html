@@ -23,12 +23,7 @@
 		<!--script src="js/spin.js"></script-->
 		<script src="js/leaflet.spin.js"></script>
 		<script src="js/leaflet-search.js"></script>
-		<!--script src="https://raw.githubusercontent.com/eclipse/paho.mqtt.javascript/master/src/mqttws31.js" type="text/javascript"></script-->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-		<script src="geojson/building_names_for_search.geojson"></script>
 		<script src="js/L.Control.Locate.min.js"></script>
-		
-		<!--<script src="https://cdn.jsdelivr.net/jquery/3.0.0-beta1/jquery.min.js"></script>-->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/toastr.js">
 			
@@ -37,19 +32,19 @@
 		
 		//global variables
 		var dm_no = ""
-		var mtr_analyze = false; //whether to go to use case page
-		var dma_analyze = false; //whether to go to use case page
+		var mtr_analyze = false; //will direct to analysis page
+		var dma_analyze = false; //will direct to analysis page
 		var pushedMeters = ['Ashok Nagar SW3DM0604', 'Ashok Nagar SW3DM0601', 'Ashok Nagar SW3DM0602.', 'Ashok Nagar SW3DM0603', 'Azad Nagar SW1DM1201', 'Azad Nagar SW1DM1202', 'Azad Nagar SW1DM1203', 'Banagiri Nagar SW2DM0703', 'Banagiri Nagar SW2DM0701', 'Banagiri Nagar SW2DM0702', 'Banashankari2nd stage SW2DM1001', 'Banashankari2nd stage SW2DM1002', 'Banashankari2nd stage SW2DM1003', 'Banashankari2nd stage SW2DM1004', 'Banashankari2nd stage SW2DM1006', 'Banashankari2nd stage SW2DM1005', 'Banashankari2nd stage SW2DM1007', 'Banashankari2nd stage SW2DM1008', 'Basavanagudi SW3DM1001', 'Basavanagudi SW3DM1003', 'Bandre nagar S1DM0402', 'Bendre Nagar S1DM0401', 'Bendre Nagar S1DM0403', 'BHCS Layout S1DM0701', 'BHCS Layout  S1DM0702 ', 'BHCS Layout  S1DM0703', 'Bhuvaneshwari Nagar SW2DM1601', 'Byrasandra SW4DM0602', 'Byrasandra SW4DM0601', 'Byrasandra SW4DM0603', 'Byrasandra SW4SM0602', 'Byrasandra SW4SM0601', 'CARP Quarters SE3DM0101', 'Chalavadipalya&Chikkal C1DM0101', 'Chalavadipalya&Chikkal C1DM0102', 'Chalavadipalya&Chikkal C1DM0103', 'Chalavadipalya&Chikkal C1DM0107', 'Channammanakere SW2DM0602', 'Channammanakere SW2DM0603', 'Channammanakere SW2DM0601', 'Channammanakere SW2DM0604', 'Chikkalasandra S1DM0201', 'JP Nagar V Phase S2DM0201', 'JP Nagar V Phase S2DM0202', 'JP Nagar V Phase S2DM0203', 'KRMarketChamarajpeteSW1DM0602  ', 'KRMarketChamarajpeteSW1DM0603', 'KRMarketChamarajpeteSW1SM0607', 'KRMarketChamarajpeteSW1SM0606', 'Kalidasa Layout SW3DM0101', 'Kamkya Layout SW2DM1701', 'Kathriguppe SW2DM0401', 'Kathriguppe SW2DM0404', 'Kathriguppe SW2DM0402', 'Kathriguppe SW2DM0403', 'KG Nagara SW1DM0102', 'KG Nagara SW1DM0103', 'KHB Colony SE3DM0401', 'Koramangala 1st Block SE3DM1201', 'Koramangala 1st Block SE3DM1202', 'Koramangala 3rd & 4th SE3DM0301', 'Koramangala 3rd & 4th SE3DM0302', 'Koramangala 3rd & 4th SE3DM0304', 'Koramangala6thBlk SE3DM0501', 'Koramangala6thBlk SE3DM0502', 'Kormangala 7th & 8th SE3DM1101', 'Kormangala 7th & 8th SE3DM0201', 'Kormangala 7th & 8th SE3DM0202', 'KSRP Quarters SE3DM1301', 'Kumarswamy Layout 1st S1DM0901', 'Kumarswamy Layout 1st S1DM0902', 'Kumarswamy Layout 2nd S1DM0601', 'Kuvempu Nagar S3DM0301', 'Kuvempu Nagar S3DM0302', 'Kuvempu Nagar S3DM0303', 'Madiwala S3DM0101', 'Madiwala S3DM0102', 'Maruthi Nagar S3DM0901', 'Mavalli SW1DM0501', 'Mavalli SW1DM0502', 'Mico Layout S3DM0401', 'Muneshwara Block SW3DM0704', 'Muneshwara Block SW3DM0702', 'Muneshwara Block SW3DM0701', 'Nagendra Block SW3DM0401', 'Nagendra Block SW3DM0402', 'New Timber Yard  W1DMA0202', 'New Timber Yard  W1DMA0201', 'New Timber Yard  W1DMA0203', 'New Timber Yard  W1DMA0204', 'Newguddadahalli W1DM0102', 'Newguddadahalli W1DM0103', 'Newguddadahalli W1DM0101', 'Old Guddadahalli SW1DM1001', 'Old Guddadahalli SW1DM1002', 'Padmanabhanaga S1DM0301', 'Padmanabhanagar S1DM0302 ', 'Pragathipura S1DM1001', 'Pragathipura S1DM1002', 'Shakambari Nagar SW4DM0801', 'Shakambari Nagar SW4DM0802', 'Shakambari Nagar SW4SM0801', 'Shastri Nagar SW2DM1101', 'Shastri Nagar SW2DM1102', 'Shastri Nagar SW2DM1103', 'Siddhartha Colony SE3DM0802', 'Siddhartha Colony SE3DM0801', 'Siddhartha Colony SE3BM0801', 'Siddhartha Colony SE3BM0802', 'Siddhartha Colony SE3BM0803', 'Srinagar SW3DM0301', 'Srinagar SW3DM0302', 'Srinagar SW3DM0303', 'Srinivasa Nagar SW2DM0302.', 'Srinivasa Nagar SW2DM0301', 'Srinivasa Nagar SW2DM0303', 'STB SE3DM0601', 'STB SE3DM0602', 'Suddagunte Palya S3DM0804 ', 'Suddagunte Palya S3DM0803', 'Suddagunte Palya S3DM0802', 'Suddagunte Palya S3DM0801', 'Suddagunte Palya S3DM0805', 'Thyagaraja Nagar SW3DM1301', 'Thyagaraja Nagar SW3DM1302', 'Thyagaraja Nagar SW3DM1303', 'Thyagaraja Nagar SW3DM1304', 'Thyagaraja Nagar SW3DM1306', 'V V Puram SW1DM0403', 'V V Puram SW1DM0405', 'Venkateshwar Layout S3DM0501', 'Venkateshwar Layout S3DM0502', 'Venkateshwar Layout S3DM0503', 'Vidya Nagar SW2DM0102', 'Vidya Nagar SW2DM0101', 'Vivekananda Nagar SW2DM0501', 'Venkateshwar Layout S3SM0501']
 
 		function togglebool(iD) {
 			console.log('id of meter is '+iD)
 			
 			//parent checkboxes
-			if (iD == 'cb_3') { // dma_d2b
+			if (iD == 'cb_2') { // dma_d2b
 				dma_analyze = false;
 				document.getElementById("analysis_dma").checked = false;
 			}
-			else if (iD == 'cb_7') { // meter
+			else if (iD == 'cb_1') { // meter
 				mtr_analyze = false;
 				document.getElementById("analysis_mtr").checked = false;
 			}
@@ -60,7 +55,7 @@
 				console.log(mtr_analyze," value is ");
 				
 				//uncheck the others
-				if ( document.getElementById("cb_3").checked == true  ) {
+				if ( document.getElementById("cb_2").checked == true  ) {
 					document.getElementById("analysis_dma").checked = false;
 					dma_analyze = false;
 				}
@@ -70,7 +65,7 @@
 				console.log(dma_analyze," value is ");
 				
 				//uncheck the others
-				if ( document.getElementById("cb_7").checked == true  ) {
+				if ( document.getElementById("cb_1").checked == true  ) {
 					document.getElementById("analysis_mtr").checked = false;
 					mtr_analyze = false;
 				}
@@ -135,7 +130,7 @@
 						wtr_pipe.addTo(map);;
 						elevation.addTo(map);
 						valves.addTo(map);
-						borewell_points.addTo(map);
+						flow_pressure_meters.addTo(map);
 			}
 			else
 			{
@@ -144,7 +139,7 @@
 				map.removeLayer(wtr_pipe);
 				map.removeLayer(elevation);
 				map.removeLayer(valves);
-				map.removeLayer(borewell_points);
+				map.removeLayer(flow_pressure_meters);
 			}
 		}
 
@@ -168,7 +163,7 @@
 						wtr_pipe.addTo(map);
 						elevation.addTo(map);
 						valves.addTo(map);
-						borewell_points.addTo(map);
+						flow_pressure_meters.addTo(map);
 			}
 			else
 			{
@@ -177,7 +172,7 @@
 				map.removeLayer(wtr_pipe);
 				map.removeLayer(elevation);
 				map.removeLayer(valves);
-				map.removeLayer(borewell_points);
+				map.removeLayer(flow_pressure_meters);
 				
 			}
 		}
@@ -281,16 +276,9 @@
 			fillOpacity: 1
 		});
 		
-		var borewell_points=new L.GeoJSON.AJAX(["geojson/testlonglat.geojson"],
+		var flow_pressure_meters=new L.GeoJSON.AJAX(["geojson/flow_pressure_meter.geojson"],
 		{
-			/*pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {
-					'icon': L.icon({
-						iconUrl: 'png/borewell_icon.png',
-						iconSize:     [10,10]
-					})
-				});
-			},*/
+			
 			pointToLayer: function (feature, latlng) {
 				//console.log('feature: ',feature.properties.DM_No);
 				code = feature.properties.DM_No
@@ -409,12 +397,12 @@
 				uncheck_main(cb.name);}
 				}
 				break;
-				case "borewell":
+				case "flow_meter":
 				{
 					if(cb.checked)
-						borewell_points.addTo(map);
+						flow_pressure_meters.addTo(map);
 					else
-						{map.removeLayer(borewell_points);
+						{map.removeLayer(flow_pressure_meters);
 				uncheck_main(cb.name);}
 				}
 				break;
@@ -536,12 +524,10 @@
 					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 	
 						<ul>
-							<!--li>
-							<input id="cb_18" type="checkbox" name="water_main" value="water_infra" 	onclick="change_water_infra(this)"><b><label>Water Infrastructure</label></b></input> 
-							</li-->
+							
 							<br><br>
 							<li>
-								<input id="cb_7" type="checkbox" name="water_layer" value="borewell" onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul1" >
+								<input id="cb_1" type="checkbox" name="water_layer" value="flow_meter" onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul1" >
 									<label>	Meter	</label>
 								</input><div class="custom_legend"><img class="custom_legend" src="png/borewell_icon.png" /></div> 
 								<ul id="collapsible-ul1" class="collapse" aria-expanded="false">
@@ -551,7 +537,7 @@
 								</ul> <!-- end of dropdown list -->
 							</li>
 							<li>
-								<input id="cb_3" type="checkbox" name="water_layer" value="d2b" 	 	onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
+								<input id="cb_2" type="checkbox" name="water_layer" value="d2b" 	 	onclick="togglebool(this.id);layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
 									<label>DMA D2B</label>
 								</input><div class="custom_legend" style="background-color:#00ccff;"></div> 	
 								<ul id="collapsible-ul2" class="collapse" aria-expanded="false">
@@ -561,11 +547,11 @@
 								</ul> <!-- end of dropdown list -->						
 							</li>
 							<li>
-								<input id="cb_6" type="checkbox" name="water_layer" value="wtr_pipe" 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul2">
+								<input id="cb_3" type="checkbox" name="water_layer" value="wtr_pipe" 	onclick="layer_handling(this)" data-toggle="collapse" data-target="#collapsible-ul3">
 									<label>Water Pipeline</label>
 								</input><div class="custom_legend" style="background-color:red;"></div> 
 								
-								<ul id="collapsible-ul2" class="collapse" aria-expanded="false">
+								<ul id="collapsible-ul3" class="collapse" aria-expanded="false">
 									<li>
 										<input id="g100" type="checkbox" name="water_layer" value="wtr_pipe_gdia"  onclick="layer_handling(this)"><b><label>Greater than 100 dia</label></b></input>
 									</li>
@@ -573,13 +559,13 @@
 								
 							</li>
 							<li>
-								<input id="cb_5" type="checkbox" name="water_layer" value="d2b_leaks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
+								<input id="cb_4" type="checkbox" name="water_layer" value="d2b_leaks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
 							</li>
 							<li>
-								<input id="cb_11" type="checkbox" name="water_layer" value="elevation" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
+								<input id="cb_5" type="checkbox" name="water_layer" value="elevation" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
 							</li>
 							<li>
-								<input id="cb_15" type="checkbox" name="water_layer" value="valves" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
+								<input id="cb_6" type="checkbox" name="water_layer" value="valves" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
 							</li>
 	
 						</ul>
@@ -614,7 +600,7 @@
 				    <div class="row">
 					<div id="map" class="Map_div">
 						<script>
-							var map = L.map('map').setView([12.9327832758, 77.544728419699993],15);   //([13.021583, 77.566949], 15);
+							var map = L.map('map').setView([12.9327832758, 77.544728419699993],15);
 						
 						
 						
@@ -622,90 +608,6 @@
 							//attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 							attribution: '&copy; <a href="https://imprint-india.org/intelligent-water-supply-network-monitoring-and-control-for-equitable-distribution-of-water-within-a-mega-city-eqwater">IMPRINT </a>, <a href="http://www.iisc.ernet.in/">Indian Institute of Science</a>, 2019.| <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 							}).addTo(map);
-						
-							var data = buildings_for_search;
-
-							var featuresLayer = new L.GeoJSON(data, {
-								style: function(feature) {
-									return {color: feature.properties.color
-											//fillOpacity:0
-									};
-								},
-								onEachFeature: function(feature, marker) {
-									marker.bindPopup('<h4 style="color:'+'black'+'">'+ feature.properties.name +'</h4>');
-								}
-							});
-							map.addLayer(featuresLayer);
-
-							var searchControl = new L.Control.Search({layer: featuresLayer, propertyName: 'name', circleLocation:false});
-
-							searchControl.on('search_locationfound', function(e) {
-							
-							e.layer.setStyle({fillColor: '#d3d3d3', color: '#d3d3d3',});
-							if(e.layer._popup)
-								e.layer.openPopup();
-
-							}).on('search_collapsed', function(e) {
-
-								featuresLayer.eachLayer(function(layer) {	
-									featuresLayer.resetStyle(layer);
-								});	
-							});
-						
-							map.addControl( searchControl ); 
-							/*lc = L.control.locate({
-								follow: true,
-								keepCurrentZoomLevel: true,
-								icon:'borewell_icon',
-								strings: {
-									title: "My Current Location"
-								}
-							}).addTo(map);
-							//end of comment
-							*/
-							
-							
-							
-							L.control.locate({
-								position: 'topleft', // set the location of the control
-								layer: new L.LayerGroup(), // use your own layer for the location marker
-								drawCircle: true, // controls whether a circle is drawn that shows the uncertainty about the location
-								follow: false, // follow the user's location
-								setView: true, // automatically sets the map view to the user's location, enabled if `follow` is true
-								keepCurrentZoomLevel: false, // keep the current map zoom level when displaying the user's location. (if `false`, use maxZoom)
-								stopFollowingOnDrag: false, // stop following when the map is dragged if `follow` is true (deprecated, see below)
-								remainActive: false, // if true locate control remains active on click even if the user's location is in view.
-								markerClass: L.circleMarker, // L.circleMarker or L.marker
-								circleStyle: {}, // change the style of the circle around the user's location
-								markerStyle: {},
-								followCircleStyle: {}, // set difference for the style of the circle around the user's location while following
-								followMarkerStyle: {},
-								icon: 'fa fa-map-marker', // class for icon, fa-location-arrow or fa-map-marker
-								iconLoading: 'fa fa-spinner fa-spin', // class for loading icon
-								iconElementTag: 'span', // tag for the icon element, span or i
-								circlePadding: [0, 0], // padding around accuracy circle, value is passed to setBounds
-								metric: true,
-								
-								showPopup: true, // display a popup when the user click on the inner marker
-								strings: {
-									title: "Current Location", // title of the locate control
-									metersUnit: "meters", // string for metric units
-									feetUnit: "feet", // string for imperial units
-									popup: "You are within {distance} {unit} from this point", // text to appear if user clicks on circle
-									outsideMapBoundsMsg: "You seem located outside the boundaries of the map" // default message for onLocationOutsideMapBounds
-								},
-								locateOptions: {} // define location options e.g enableHighAccuracy: true or maxZoom: 10
-							}).addTo(map);
-							
-						
-
-							map.on('startfollowing', function() {
-								map.on('dragstart', lc._stopFollowing, lc);
-							}).on('stopfollowing', function() {
-								map.off('dragstart', lc._stopFollowing, lc);
-							});
-							
-							
 								
 						</script>
 					<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
