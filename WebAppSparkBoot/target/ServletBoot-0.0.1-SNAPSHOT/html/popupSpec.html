@@ -1,0 +1,258 @@
+    <!doctype html>
+    <html>
+    <head>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<link href="../css/grid.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <style>
+        window{width:300px; height:150px; }
+        body{ background-color: ivory;}
+        #canvas{border:1px solid red; margin:0 auto; }
+    </style>
+	<script src="../jscripts/Chart.bundle.js"></script>
+    <script>
+	//beginning of jscript
+    $(function(){
+		
+	function retDateToBar (date, jData) {
+		//console.log("inside the function")
+		//console.log(jData.count)
+		return {
+			t: date.valueOf(),
+			y: jData.count
+		};
+		
+		
+	}		
+		
+		
+	data = window.localStorage.getItem("data");
+	dm_no = window.localStorage.getItem("dm_no");
+	l2 = window.localStorage.getItem("l2");
+	l = window.localStorage.getItem("l");
+	gini = window.localStorage.getItem("gini");
+	console.log(gini);
+
+	if (dm_no == "" && gini != "")
+	{
+		ctx = document.getElementById("myChart");
+		ctx.style.backgroundColor = 'white';
+		/*lab = window.opener.lab;//['DMA','someother','thing'];
+		l= window.opener.l;//[12,-5,-3];
+		key_opt = window.opener.key_opt;
+		agg_opt = window.opener.agg_opt;
+		col_opt = window.opener.col_opt; */
+
+		
+		l2 = JSON.parse(l2);
+		l = JSON.parse(l);
+		//l2 = l2.split(/\s*,\s*/);
+		//l = l.split(/\s*,\s*/);
+		console.log(l2);
+		console.log(l);
+		
+		
+		myChart = new Chart(ctx, {
+			type: 'scatter',
+			data: {
+				
+				datasets: [{
+					label: 'consumption inequity',
+					data: l,
+					borderColor: "blue",
+					borderWidth: 3,
+					showLine: true,
+					fill:false
+				},{
+					label: 'ideal',
+					data: l2,
+					borderColor: "#3cba9f",
+					borderWidth: 3,
+					showLine: true,
+					fill:false
+				}]
+			},
+			options: {
+				title : {
+					display: true,
+					text: 'Lorenz Curve'
+				},
+				scales: {
+				yAxes: [{
+					scaleLabel: {
+							display:true,
+							labelString: "cumulative consumption percentile"
+					}
+				}],
+				
+				xAxes: [{
+					scaleLabel: {
+							display:true,
+							labelString: "cumulative population percentile"
+					},
+					type: 'linear',
+					position: 'bottom'
+				}]
+				},
+				responsive: true
+				
+			}
+			
+		});
+			
+			var div = document.getElementById('ixMsg');
+			
+			div.innerHTML += '<strong>Gini Index : </strong>'+gini;
+	}//end of lorenz
+	
+	else {
+		data = JSON.parse(data);
+		console.log("dm_no is ",dm_no)
+		console.log(data)
+		var retData = data
+
+		console.log(retData)
+		var dateFormat = 'YYYY-MM-DD HH:mm:ss.f' 
+		var date = moment(retData[0].dma_code, dateFormat);
+		
+		console.log(date)
+		console.log(date.isoWeekday())
+		var data_g = [retDateToBar(date, retData[0])];//30
+		console.log(data_g)
+		
+		/*
+LTS  : 'h:mm:ss A',
+ LT   : 'h:mm A',
+ L    : 'MM/DD/YYYY',
+ LL   : 'MMMM D, YYYY',
+ LLL  : 'MMMM D, YYYY h:mm A',
+ LLLL : 'dddd, MMMM D, YYYY h:mm A'
+		 */
+		
+		var labels = [date.format('L') + " " + date.format('LT')];
+		var i = 1;
+		while (i < retData.length) { //60------------------------------------number of values in the graph 
+			date = moment(retData[i].dma_code, dateFormat);
+			data_g.push(retDateToBar(date, retData[i]));
+			//labels.push(date.toString()[15:]);
+			labels.push(date.format('L') + " " + date.format('LT'))
+			console.log('came here')
+			
+			i+=1;
+		}
+
+		
+		console.log(labels)
+		console.log(data_g)
+
+	ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	//myChart destroy only if lorenz part of code not here
+	/*if(myChart){
+		myChart.destroy();
+	}*/
+
+		var cfg = {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: 'Line Chart flow-meter readings of DM : '+dm_no,
+					backgroundColor: "rgba(14,72,100,1)",
+					//backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+					borderColor: "red",
+					strokeColor: "brown",
+					data: data_g,
+					type: 'line',
+					pointRadius: 0,
+					fill: false,
+					lineTension: 0,
+					borderWidth: 2
+				}]
+			},
+			options: {
+
+			pan: {
+						enabled: false,
+						mode: 'xy' //,
+						//speed: 2,
+						//threshold: 2
+			},
+			zoom: {
+						enabled: false,
+						mode: 'x' /*,
+						limits: {
+							max: 10,
+							min: 0.5
+						}*/
+			},
+			
+				scales: {
+					xAxes: [{
+					scaleLabel: {
+						type: 'time',
+						distribution: 'series',
+						display:true,
+						//x axis label
+						labelString: "date-time"
+					}
+				}/*,
+				{
+						type: 'time',
+						distribution: 'series',
+						ticks: {
+							source: 'labels'
+						}
+					}*/],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							//y axis label
+							labelString: 'flow rate (m3/hr)'
+						}
+					}]
+				}
+			}
+
+		};	
+	
+	myChart = new Chart(ctx, cfg);
+	//myChart.options.zoom.enabled = true;		
+		
+		
+	} // end of else block
+	
+	
+	
+    }); 	
+	// end $(function(){});
+    </script>
+	
+    </head>
+    <body>
+		<div class="container">
+	    <div class="container graphcanvas">
+        <div class="row">
+          <div class="col-md-12">
+			<canvas id="myChart"></canvas>
+			</div>
+		</div>
+		</div>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-12 text-center">
+          <div class="alert alert-success" id="ixMsg">
+              
+          </div>             
+          </div>
+        </div>
+
+      </div>		
+		
+		
+	
+	  </div>
+    </body>
+    </html>

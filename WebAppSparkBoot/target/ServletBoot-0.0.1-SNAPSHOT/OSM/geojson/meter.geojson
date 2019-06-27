@@ -1,8 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "meter",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "DM_No": "SW2DM0102", "DMA_No": "SW2DMA01", "DMA_Name": "Vidya Nagar", "Instl_Date": "2013\/02\/04", "Remarks": "Installed", "EMF_Sl_No": "045205H442", "DM_Size_mm": 200, "DM_Elev_m": 860.588, "GL_m": 862.388, "BoxLevel_m": 863.85, "Meter_Type": "EMF Meter", "Web_link": "Linked", "DM_Install": "Installed", "Meter": "District Meter", "X": 77.544728419699993, "Y": 12.9327832758, "GPS": null, "Instld_By": "L&T", "Summ": 1 }, "geometry": { "type": "Polygon", "coordinates": [ 77.544728419699993, 12.9327832758 ] } }
-]
-}
