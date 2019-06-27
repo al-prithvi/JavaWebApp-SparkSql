@@ -519,11 +519,11 @@ public class MyServletDemo extends HttpServlet {
     	  // for flow_pressure time series graph of flow meter
     	  else if (val!=null && label.equals("flow_pressure")) {
     		  //VMCode
-    		  dm_no = "SW3DM0601";
+    		  //dm_no = "SW3DM0601";
     		  System.out.println("dm_no is "+dm_no);
     		  //*************************************************************HARD CODED****************
     		  //VMCode
-    		  sql = "Select flow_rate, dt_time from flowAndPressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "' and flow_rate>=0"; //flowAndPressure LOCAL DEBUG
+    		  sql = "Select flow_rate, dt_time from flow_pressure where dma_name_code like '%" + dm_no + "' and date>='" + fdate + "' and date<'" + tdate + "' and flow_rate>=0"; //flowAndPressure LOCAL DEBUG
     		  System.out.println(sql);
     		  pstmt = conn.createStatement();
     		  ResultSet rs = pstmt.executeQuery(sql);

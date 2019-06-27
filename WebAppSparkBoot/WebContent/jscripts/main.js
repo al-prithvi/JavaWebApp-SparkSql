@@ -63,7 +63,7 @@ var dma_month_key = ["dma_code", "month"];
 
 // ****************end of test objects
 // -----global variables
-var employee_data = '';
+var target_data = '';
 var agg_data = '';
 var key_data = '';
 
@@ -123,25 +123,25 @@ function track_click_element(clicked_id){
 function plotGraph(){
 
 
-	var table = document.getElementById("employee_table");
+	var table = document.getElementById("target_table");
 	table.innerHTML = '<tr></tr>';
 
-	employee_data = '';
+	target_data = '';
 	col_opt = '';
 	agg_opt = '';
 	key_opt = '';
 	agg_data = '';
 	key_data = '';
-    employee_data +='<tr>';
-    //employee_data +='<th>Name</th>';
-    //employee_data +='<th>Address</th>';
-    employee_data +='</tr>';
+    target_data +='<tr>';
+    //target_data +='<th>Name</th>';
+    //target_data +='<th>Address</th>';
+    target_data +='</tr>';
 
 	//obj.forEach(process_fill)
 	test_json(obj2);
-	$('#employee_table').append(employee_data)
+	$('#target_table').append(target_data)
 
-    //var table = document.getElementById("employee_table");
+    //var table = document.getElementById("target_table");
     //called function for this
     record_clicks_for_cells(table);
 
@@ -162,7 +162,7 @@ function plotGraph(){
     record_clicks_for_cells(keytable);
 
     //clear both data for next click
-    employee_data = '';
+    target_data = '';
     agg_data = '';
     key_data = '';
 
@@ -174,26 +174,26 @@ function plotGraph(){
 function plotMonth(){
 
 
-	var table = document.getElementById("employee_table");
+	var table = document.getElementById("target_table");
 	table.innerHTML = '<tr></tr>';
 
-	employee_data = '';
+	target_data = '';
 	
 	agg_data = '';
 	key_data = '';
 	col_opt = '';
 	agg_opt = '';
 	key_opt = '';
-    employee_data +='<tr>';
-    //employee_data +='<th>Name</th>';
-    //employee_data +='<th>Address</th>';
-    employee_data +='</tr>';
+    target_data +='<tr>';
+    //target_data +='<th>Name</th>';
+    //target_data +='<th>Address</th>';
+    target_data +='</tr>';
 
 	//obj.forEach(process_fill)
 	test_json(obj3);
-	$('#employee_table').append(employee_data)
+	$('#target_table').append(target_data)
 
-    //var table = document.getElementById("employee_table");
+    //var table = document.getElementById("target_table");
     //called function for this
     record_clicks_for_cells(table);
 
@@ -216,7 +216,7 @@ function plotMonth(){
 
 
     //clear both data for next click
-    employee_data = '';
+    target_data = '';
     agg_data = '';
     key_data = '';
 
@@ -224,26 +224,26 @@ function plotMonth(){
 }
 
 function plotRRInfo() {
-	var table = document.getElementById("employee_table");
+	var table = document.getElementById("target_table");
 	table.innerHTML = '<tr></tr>';
 
-	employee_data = '';
+	target_data = '';
 	
 	agg_data = '';
 	key_data = '';
 	col_opt = '';
 	agg_opt = '';
 	key_opt = '';
-    employee_data +='<tr>';
-    //employee_data +='<th>Name</th>';
-    //employee_data +='<th>Address</th>';
-    employee_data +='</tr>';
+    target_data +='<tr>';
+    //target_data +='<th>Name</th>';
+    //target_data +='<th>Address</th>';
+    target_data +='</tr>';
 
 	//obj.forEach(process_fill)
 	test_json(obj4);
-	$('#employee_table').append(employee_data)
+	$('#target_table').append(target_data)
 
-    //var table = document.getElementById("employee_table");
+    //var table = document.getElementById("target_table");
     //called function for this
     record_clicks_for_cells(table);
 
@@ -266,7 +266,7 @@ function plotRRInfo() {
 
 
     //clear both data for next click
-    employee_data = '';
+    target_data = '';
     agg_data = '';
     key_data = '';
 
@@ -332,30 +332,30 @@ function record_clicks_for_cells(table_name){
 function test_json(objd){
 	console.log(objd.length);
 	var i = 0;
-	employee_data += '<tr>';
+	target_data += '<tr>';
 	objd.forEach(function(r){
 		if (i<2){ i++; 		
-				employee_data += '<td id="colcell">'+r.column+'</td>';
+				target_data += '<td id="colcell">'+r.column+'</td>';
 		}
 		else { i=1; 
-				employee_data += '</tr>';
-				employee_data += '<tr>';
-				employee_data += '<td id="colcell">'+r.column+'</td>';
+				target_data += '</tr>';
+				target_data += '<tr>';
+				target_data += '<td id="colcell">'+r.column+'</td>';
 		}
 		console.log(i);
 		console.log(r.column);
 	});
-	employee_data += '</tr>';
+	target_data += '</tr>';
 
 	
 }
 
 
 function process_fill(data){
-				employee_data += '<tr>';
-				employee_data += '<td id="colcell">'+data.name+'</td>';
-				employee_data += '<td id="colcell">'+data.address+'</td>';
-				employee_data += '</tr>'
+				target_data += '<tr>';
+				target_data += '<td id="colcell">'+data.name+'</td>';
+				target_data += '<td id="colcell">'+data.address+'</td>';
+				target_data += '</tr>'
 				
 }
 
@@ -542,7 +542,7 @@ function submitquery(){
 		//col_opt is from mapping dictionary and inner element from json object
 		//agg_opt is from array object
 		
-		var requestUrl = 'spark?table='+tab_opt+'&column='+col_opt+'&agg='+agg_opt+'&key='+key_opt+'&monYear='+mon_year_opt;
+		var requestUrl = '../spark?table='+tab_opt+'&column='+col_opt+'&agg='+agg_opt+'&key='+key_opt+'&monYear='+mon_year_opt;
 		console.log(requestUrl);
 		request.open('GET', requestUrl, true);
 		console.log(request.responseText)
@@ -625,73 +625,6 @@ function submitquery(){
 }
 
 
-//chart code
-//create chart
-
-function createChart(){
-	vioBoxTog='';
-	//**** chart code
-	var ctx = document.getElementById("myChart");
-	ctx.style.backgroundColor = 'white';
-	if(myChart){
-		myChart.destroy();
-	}
-	
-	myChart = new Chart(ctx, {
-	    type: 'bar',
-	    data: {
-	        labels: lab,
-	        datasets: [{
-	            label: agg_opt+'('+clickedId+')',
-	            data: l,
-	            backgroundColor: "rgba(14,72,100,1)",
-				strokeColor: "brown",
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-			title : {
-				display: true,
-				text: agg_opt+'('+clickedId+') for each '+key_opt
-			},
-			pan: {
-						enabled: true,
-						mode: 'xy',
-						speed: 2,
-						threshold: 2
-			},
-			zoom: {
-						enabled: true,
-						mode: 'y',
-						limits: {
-							max: 10,
-							min: 0.5
-						}
-			},
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                },
-	                scaleLabel: {
-	                	display:true,
-	                	labelString: agg_opt+'('+clickedId+')'
-	                }
-	            }],
-				xAxes: [{
-					scaleLabel: {
-						display:true,
-						labelString: key_opt
-					}
-				}
-				]
-	        }
-	    }
-	});
-	myChart.options.zoom.enabled = false;
-}
-
-
 var popCounter = 0;
 function popUp(){
 	console.log(typeof lab);
@@ -711,7 +644,7 @@ function popUp(){
 	
 	var winName = 'myPopup'+(++popCounter);
 	
-	 window.open('popupTest.html', winName,'width=800,height=800,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,copyhistory=no,resizable=yes');
+	 window.open('../html/popupTest.html', winName,'width=800,height=800,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,copyhistory=no,resizable=yes');
 	 return false;
 }
 
@@ -874,9 +807,75 @@ function jsonToList(objj) {
 	}
 }
 
+
+//chart code
+//create chart
+
+function createChart(){
+	vioBoxTog='';
+	//**** chart code
+	var ctx = document.getElementById("myChart");
+	ctx.style.backgroundColor = 'white';
+	if(myChart){
+		myChart.destroy();
+	}
+	
+	myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	        labels: lab,
+	        datasets: [{
+	            label: agg_opt+'('+clickedId+')',
+	            data: l,
+	            backgroundColor: "rgba(14,72,100,1)",
+				strokeColor: "brown",
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+			title : {
+				display: true,
+				text: agg_opt+'('+clickedId+') for each '+key_opt
+			},
+			pan: {
+						enabled: true,
+						mode: 'xy',
+						speed: 2,
+						threshold: 2
+			},
+			zoom: {
+						enabled: true,
+						mode: 'y',
+						limits: {
+							max: 10,
+							min: 0.5
+						}
+			},
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                },
+	                scaleLabel: {
+	                	display:true,
+	                	labelString: agg_opt+'('+clickedId+')'
+	                }
+	            }],
+				xAxes: [{
+					scaleLabel: {
+						display:true,
+						labelString: key_opt
+					}
+				}
+				]
+	        }
+	    }
+	});
+	myChart.options.zoom.enabled = false;
+}
+
+
 // Box plot code
-
-
 
 function plotBox() {
 	

@@ -33,7 +33,7 @@ body {
   background-color: #333;
 
   /*background-color: #333;*/
-  background-image: url('cauvery_river_3.jpg');
+  background-image: url('../img/cauvery_river_3.jpg');
   background-position: center;
   background-repeat: no-repeat;
  
@@ -109,7 +109,7 @@ body {
   border-bottom-color: #737373;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
   .masthead-brand {
     float: left;
   }

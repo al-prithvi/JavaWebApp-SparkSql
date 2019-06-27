@@ -228,11 +228,10 @@
 			fillOpacity: 1
 		});		
 		
+		/*
 		var d2b_leaks=new L.GeoJSON.AJAX(["geojson/d2bleaks.geojson"],
 		{
-			/*onEachFeature: popUp,
-			color: 'black',
-			fillOpacity: 1*/
+
 			pointToLayer: function (feature, latlng) {
 				return L.marker(latlng, {
 					'icon': L.icon({
@@ -244,8 +243,8 @@
 			onEachFeature: popUp,
 			fillOpacity: 1			
 		});
-
-
+		*/
+        /*
 		var elevation=new L.GeoJSON.AJAX(["geojson/elevationgeo.geojson"],
 		{
 			pointToLayer: function (feature, latlng) {
@@ -260,6 +259,11 @@
 			color: 'black',
 			fillOpacity: 1
 		});
+        
+        */
+		
+		/*
+		* Disabling valves for performance reasons
 		
 		var valves=new L.GeoJSON.AJAX(["geojson/valves.geojson"],
 		{
@@ -274,7 +278,7 @@
 			onEachFeature: popUp,
 			color: 'blue',
 			fillOpacity: 1
-		});
+		});*/
 		
 		var flow_pressure_meters=new L.GeoJSON.AJAX(["geojson/flow_pressure_meter.geojson"],
 		{
@@ -558,15 +562,16 @@
 								</ul> <!-- end of dropdown list -->
 								
 							</li>
-							<li>
+							<!--li>
 								<input id="cb_4" type="checkbox" name="water_layer" value="d2b_leaks" 	onclick="layer_handling(this)"><label>D2b_Leaks_from_APP</label></input><div class="custom_legend"><img class="custom_legend" src = "png/pipeLeak.png" /></div> 
 							</li>
 							<li>
 								<input id="cb_5" type="checkbox" name="water_layer" value="elevation" 	onclick="layer_handling(this)"><label>Elevation</label></input><div class="custom_legend"><img class="custom_legend" src="png/elevate.png" /></div> 
-							</li>
-							<li>
+							</li-->
+							<!-- Valves disabled temporarily & valves.geojson removed from geojson folder -->
+							<!-- li>
 								<input id="cb_6" type="checkbox" name="water_layer" value="valves" 	onclick="layer_handling(this)"><label>Valves</label></input><div class="custom_legend"><img class="custom_legend" src="png/w_sensors_icon.png" /></div> 
-							</li>
+							</li -->
 	
 						</ul>
 					</li>			 
@@ -578,12 +583,12 @@
 						</a>
 					</li>
 					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-						<a href="../gen.html" aria-expanded="false">
+						<a href="../html/gen.html" aria-expanded="false">
 							<h4>General Query</h4>
 						</a>
 					</li>					
 					<li class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-						<a href="../spec.html" aria-expanded="false">
+						<a href="../html/spec.html" aria-expanded="false">
 							<h4>Use Cases</h4>
 						</a>
 					</li>			 

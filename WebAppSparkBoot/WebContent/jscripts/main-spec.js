@@ -280,7 +280,7 @@ function submitquery(){
 			dm_no = dma_code;
 		}
 		
-		var requestUrl = 'spark?val='+col_opt+'&label='+x_opt+'&dm_no='+dm_no+'&fdate='+fromdt+'&tdate='+todt;
+		var requestUrl = '../spark?val='+col_opt+'&label='+x_opt+'&dm_no='+dm_no+'&fdate='+fromdt+'&tdate='+todt;
 		request.open('GET', requestUrl, true);
 		console.log(request.responseText)
 		console.log("Testing console log")
@@ -939,6 +939,6 @@ function popUp(){
 	
 	var winName = 'myPopupSpec'+(++popCounter);
 	
-	 window.open('popupSpec.html', winName,'width=800,height=800,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,copyhistory=no,resizable=yes');
+	 window.open('../html/popupSpec.html', winName,'width=800,height=800,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,copyhistory=no,resizable=yes');
 	 return false;
 }
